@@ -1,25 +1,26 @@
 {
   "name": "be-nc-news",
   "version": "1.0.0",
-  "description": "bc-nc-news",
-  "main": "index.js",
+  "description": "**You can clone this repository but do not fork it**",
+  "main": "knexfile.js",
   "scripts": {
-    "setup-dbs": "psql -f ./db/setup.sql",
-    "seed": "knex seed:run",
-    "test-utils": "mocha spec/utils.spec.js",
-    "test": "mocha spec/app.spec.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/northcoders/be-nc-news.git"
+    "url": "git+https://github.com/mattg95/be-nc-news.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/northcoders/be-nc-news/issues"
+    "url": "https://github.com/mattg95/be-nc-news/issues"
   },
-  "homepage": "https://github.com/northcoders/be-nc-news#readme",
-  "dependencies": {},
-  "devDependencies": {}
+  "homepage": "https://github.com/mattg95/be-nc-news#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "knex": "^0.19.2",
+    "mocha": "^6.2.0"
+  },
+  "dependencies": {}
 }
