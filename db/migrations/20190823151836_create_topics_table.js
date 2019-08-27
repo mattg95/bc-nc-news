@@ -1,12 +1,16 @@
 exports.up = function(knex) {
   console.log("creating topics table");
-  return knex.schema.createTAble("topics", topics => {
-    topics.string("slug").primary();
-    topics.string("description");
+  return knex.schema.createTable("topics", topics => {
+    topics
+      .string("slug")
+      .unique()
+      .primary()
+      .notNullable();
+    topics.string("description").notNullable();
   });
 };
 
 exports.down = function(knex) {
-  console.log("deleting topics...");
+  console.log("deleting topics table...");
   return knex.schema.dropTable("topics");
 };
