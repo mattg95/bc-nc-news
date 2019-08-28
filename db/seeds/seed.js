@@ -18,7 +18,9 @@ exports.seed = function(knex) {
       return Promise.all([topicsPromise, userPromise]);
     })
     .then(() => {
-      return knex("articles").insert(formatDates(articleData)).returning('*');
+      return knex("articles")
+        .insert(formatDates(articleData))
+        .returning("*");
     })
 
     .then(articleRows => {
@@ -32,8 +34,8 @@ exports.seed = function(knex) {
       You will need to write and test the provided makeRefObj and formatComments utility functions to be able insert your comment data.
       */
 
-      // const articleRef = makeRefObj(articleRows);
-      // const formattedComments = formatComments(commentData, articleRef);
-      // return knex("comments").insert(formattedComments);
+      const articleRef = makeRefObj(articleRows);
+      const formattedComments = formatComments(commentData, articleRef);
+      return knex("comments").insert(formattedComments);
     });
 };
