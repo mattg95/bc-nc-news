@@ -1,14 +1,11 @@
 exports.formatDates = list => {
-  return list.map((listObj)=>{
-  const timestamp = listObj.created_at;
-  if (timestamp === undefined){ return listObj}
-  const newDate = new Date(timestamp)
-  const date = `${newDate.getDate()}/${newDate.getMonth()}/${newDate.getFullYear()}`
-  listObj.created_at = date;
-  return listObj
-  }
-  )
-
+  return list.map(listObj => {
+    const timestamp = listObj.created_at;
+    const date = new Date(timestamp);
+    console.log(date);
+    listObj.created_at = date;
+    return listObj;
+  });
 };
 
 exports.makeRefObj = list => {
@@ -24,4 +21,11 @@ exports.makeRefObj = list => {
   return obj;
 };
 
-exports.formatComments = (comments, articleRef) => {};
+exports.formatComments = (comments, articleRef) => {
+  comments[0].author = comments[0].created_by;
+  const title = comments[0].belongs_to;
+  comments[0].article_id = articleRef[title];
+  delete comments[0].created_by;
+  delete comments[0].belongs_to;
+  return comments;
+};

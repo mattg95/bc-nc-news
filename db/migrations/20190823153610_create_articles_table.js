@@ -1,12 +1,9 @@
 exports.up = function(knex) {
   console.log("creating articles table...");
   return knex.schema.createTable("articles", articles => {
-    articles
-      .increments("article_id")
-      .primary()
-      .notNullable();
+    articles.increments("article_id").primary();
     articles.string("title").notNullable();
-    articles.string("body").notNullable();
+    articles.text("body").notNullable();
     articles.integer("votes").defaultsTo(0);
     articles.string("topic").references("topics.slug");
     articles.string("author").references("users.username");
