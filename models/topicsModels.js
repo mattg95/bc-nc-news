@@ -1,10 +1,7 @@
-const knex = require('../knexfile.js');
-//const connection = require('../connections.js')
-
+const connection = require("../connections.js");
 
 function returnAllTopics() {
-  console.log(connection.select('*').from('films'))
-  return knex.query('SELECT * FROM topics;').then(res => res.rows);
+  return connection.select("*").from("topics");
 }
 
-module.exports = {returnAllTopics}
+module.exports = returnAllTopics;

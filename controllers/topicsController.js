@@ -1,12 +1,13 @@
-const {returnAllTopics} = require('../models/topicsModels')
-
+const returnAllTopics = require("../models/topicsModels");
 
 // Get all topcis
 sendTopics = (req, res, next) => {
-  console.log('inside sendTopics');
-  returnAllTopics()
-  .then(topics => res.status(200).send({topics}))
-  .catch(next)
-}
+  console.log("inside sendTopics");
+  returnAllTopics().then(topicRes => {
+    console.log(topicRes + "<========topicsRes");
+    res.status(200).send(topicRes);
+  });
+  //.catch(console.log);
+};
 
-module.exports = {sendTopics}
+module.exports = sendTopics;

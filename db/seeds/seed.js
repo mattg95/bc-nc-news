@@ -12,7 +12,6 @@ exports.seed = function(knex) {
     .rollback()
     .then(() => knex.migrate.latest())
     .then(() => {
-      console.log("above return");
       const topicsPromise = knex("topics").insert(topicData);
       const userPromise = knex("users").insert(userData);
       return Promise.all([topicsPromise, userPromise]);
@@ -24,7 +23,6 @@ exports.seed = function(knex) {
     })
 
     .then(articleRows => {
-      console.log(articleRows[0]);
       /* 
 
       Your comment data is currently in the incorrect format and will violate your SQL schema. 
