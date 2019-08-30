@@ -56,5 +56,25 @@ describe("/api", () => {
           });
       });
     });
+    describe.only("GET", () => {
+      it("STATUS: 200 responds with a specified article object", () => {
+        return request(app)
+          .get("/api/articles/1")
+          .expect(200)
+          .then(res => {
+            console.log(res.body);
+            expect(res.body[0]).to.have.property(
+              "author",
+              "title",
+              "article_id",
+              "body",
+              "topic",
+              "created_at",
+              "votes",
+              "comment_count"
+            );
+          });
+      });
+    });
   });
 });
