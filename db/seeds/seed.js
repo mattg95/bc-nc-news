@@ -17,9 +17,7 @@ exports.seed = function(knex) {
       return Promise.all([topicsPromise, userPromise]);
     })
     .then(() => {
-      return knex("articles")
-        .insert(formatDates(articleData))
-        .returning("*");
+      return knex("*");
     })
 
     .then(articleRows => {

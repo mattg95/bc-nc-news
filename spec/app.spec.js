@@ -46,6 +46,7 @@ describe("/api", () => {
           .expect(200)
           .then(res => {
             expect(res.body).to.deep.equal([
+              //<-----doesn't want to be in an array
               {
                 username: "butter_bridge",
                 name: "jonny",
@@ -64,6 +65,7 @@ describe("/api", () => {
           .then(res => {
             console.log(res.body);
             expect(res.body[0]).to.have.property(
+              //<------ write the function so it doesn't export an array
               "author",
               "title",
               "article_id",
