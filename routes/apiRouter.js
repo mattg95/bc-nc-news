@@ -6,11 +6,10 @@ const articlesRouter = require("./articlesRouter.js");
 
 //--------------------
 
-console.log("in API!");
-
 //---
 
 apiRouter.get("/", (req, res) => {
+  console.log("in API!");
   res.status(200).send("welcome to the API");
 });
 

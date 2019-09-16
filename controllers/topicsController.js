@@ -4,7 +4,7 @@ const returnAllTopics = require("../models/topicsModels");
 sendTopics = (req, res, next) => {
   console.log("inside sendTopics");
   returnAllTopics().then(topicRes => {
-    res.status(200).send(topicRes);
+    res.status(200).send({ topics: topicRes });
   });
   //.catch(console.log);
 };

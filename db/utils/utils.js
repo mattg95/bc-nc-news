@@ -1,4 +1,4 @@
-exports.formatDates = list => {
+exports.formatDate = list => {
   return list.map(listObj => {
     const timestamp = listObj.created_at;
     const date = new Date(timestamp);
@@ -22,9 +22,9 @@ exports.formatComments = (comments, articleRef) => {
     comment.author = comment.created_by;
     delete comment.created_by;
     const title = comment.belongs_to;
-    comment.article_id = articleRef[title];
     delete comment.belongs_to;
-    exports.formatDates([comment]);
+    comment.article_id = articleRef[title];
+    comment.created_at = new Date(comment.created_at);
     return comment;
   });
 };

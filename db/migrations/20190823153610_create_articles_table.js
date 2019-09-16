@@ -4,10 +4,10 @@ exports.up = function(knex) {
     articles.increments("article_id").primary();
     articles.string("title").notNullable();
     articles.text("body").notNullable();
-    articles.integer("votes").defaultsTo(0);
+    articles.integer("votes").defaultTo(0);
     articles.string("topic").references("topics.slug");
     articles.string("author").references("users.username");
-    articles.timestamps("created_at");
+    articles.timestamp("created_at"); //.defaultTo(Date.now());
 
     //created at references the current timestamp
   });

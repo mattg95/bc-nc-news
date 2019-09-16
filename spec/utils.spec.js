@@ -1,16 +1,12 @@
 const { expect } = require("chai");
-const {
-  formatDates,
-  makeRefObj,
-  formatComments
-} = require("../db/utils/utils");
+const { formatDate, makeRefObj, formatComments } = require("../db/utils/utils");
 
 ///////-------------
 
-describe("formatDates", () => {
+describe("formatDate", () => {
   it("when passed a date formatted as a UNIX timestamp, returns the same date as a javascript date object", () => {
     const input = [{ created_at: 0 }];
-    const output = formatDates(input);
+    const output = formatDate(input);
     expect(output[0].created_at).to.deep.equal(new Date(0));
   });
   it("when an object with multiple key-value pairs, only the date property to a javascript date object", () => {
@@ -20,7 +16,7 @@ describe("formatDates", () => {
         created_at: 1511354163389
       }
     ];
-    const output = formatDates(input);
+    const output = formatDate(input);
     expect(output[0].created_at).to.deep.equal(new Date(1511354163389));
   });
   it("works for an array of multiple objects", () => {
@@ -31,7 +27,7 @@ describe("formatDates", () => {
       },
       { created_at: 0 }
     ];
-    const output = formatDates(input);
+    const output = formatDate(input);
     expect(output[0].created_at).to.deep.equal(new Date(1511354163389));
     expect(output[1].created_at).to.deep.equal(new Date(0));
   });
@@ -85,7 +81,7 @@ describe("formatComments", () => {
   it("article_id key should correspond with the title of the origional 'belongs_to' key", () => {
     expect(output[0].article_id).to.equal(1);
   });
-  it("create_at value sould be converted into a javascript date object", () => {
+  it("created_at value sould be converted into a javascript date object", () => {
     expect(output[0].created_at).to.deep.equal(new Date(1511354163389));
   });
   //-----------------------------

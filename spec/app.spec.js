@@ -14,67 +14,70 @@ describe("/api", () => {
         .expect(200)
         .then(res => {
           expect(res.body).to.deep.equal({});
+          expect(res.text).to.deep.equal("welcome to the API");
         });
     });
-    describe("GET", () => {
-      it("STATUS:200 responds with an array of topic objects", () => {
+    describe("GET api/topics", () => {
+      it("STATUS:200 responds with an object containing an array of topic objects", () => {
         return request(app)
           .get("/api/topics")
           .expect(200)
           .then(res => {
-            expect(res.body).to.deep.equal([
-              {
-                description: "The man, the Mitch, the legend",
-                slug: "mitch"
-              },
-              {
-                description: "Not dogs",
-                slug: "cats"
-              },
-              {
-                description: "what books are made of",
-                slug: "paper"
-              }
-            ]);
+            expect(res.body).to.deep.equal({
+              topics: [
+                {
+                  description: "The man, the Mitch, the legend",
+                  slug: "mitch"
+                },
+                {
+                  description: "Not dogs",
+                  slug: "cats"
+                },
+                {
+                  description: "what books are made of",
+                  slug: "paper"
+                }
+              ]
+            });
           });
       });
     });
-    describe("GET", () => {
+    describe("GET api/users:username", () => {
       it("STATUS: 200 responds with a specified username object", () => {
         return request(app)
           .get("/api/users/butter_bridge")
           .expect(200)
           .then(res => {
-            expect(res.body).to.deep.equal([
-              //<-----doesn't want to be in an array
-              {
+            expect(res.body).to.deep.equal({
+              user: {
                 username: "butter_bridge",
                 name: "jonny",
                 avatar_url:
                   "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
               }
-            ]);
+            });
           });
       });
     });
-    describe.only("GET", () => {
+    describe("GET api/articles/article_id", () => {
       it("STATUS: 200 responds with a specified article object", () => {
         return request(app)
           .get("/api/articles/1")
           .expect(200)
           .then(res => {
-            console.log(res.body);
-            expect(res.body[0]).to.have.property(
-              //<------ write the function so it doesn't export an array
+            expect(res.body.article).to.contain.keys(
+              "article_id",
               "author",
               "title",
-              "article_id",
               "body",
-              "topic",
               "created_at",
               "votes",
-              "comment_count"
+              "topic"
             );
+            expect(res.body.article).to.include({
+              title: "Living in the shadow of a great man",
+              author: "butter_bridge"
+            });
           });
       });
     });
