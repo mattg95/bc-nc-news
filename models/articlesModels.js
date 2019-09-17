@@ -1,9 +1,17 @@
 const connection = require("../connections.js");
 
-function returnArticles(req) {
+exports.returnArticles = (req, res, next) => {
   return connection
     .select("*")
     .from("articles")
     .where({ article_id: req.article_id });
-}
-module.exports = returnArticles;
+};
+
+exports.patchArticles = (req, res, next) => {
+  return connection
+    .select("*")
+    .from("articles")
+    .where({ article_id: req.params.article_id })
+    .increment({ votes: req.body.inc_votes })
+    .returning("*");
+};

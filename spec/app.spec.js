@@ -13,8 +13,7 @@ describe("/api", () => {
         .get("/api")
         .expect(200)
         .then(res => {
-          expect(res.body).to.deep.equal({});
-          expect(res.text).to.deep.equal("welcome to the API");
+          expect(res.body).to.deep.equal({ message: "welcome to the API" });
         });
     });
     describe("GET api/topics", () => {
@@ -42,7 +41,7 @@ describe("/api", () => {
           });
       });
     });
-    describe("GET api/users:username", () => {
+    describe("GET api/users/:username", () => {
       it("STATUS: 200 responds with a specified username object", () => {
         return request(app)
           .get("/api/users/butter_bridge")
@@ -59,7 +58,7 @@ describe("/api", () => {
           });
       });
     });
-    describe("GET api/articles/article_id", () => {
+    describe("GET api/articles/:article_id", () => {
       it("STATUS: 200 responds with a specified article object", () => {
         return request(app)
           .get("/api/articles/1")
@@ -79,6 +78,17 @@ describe("/api", () => {
               author: "butter_bridge"
             });
           });
+      });
+      describe("PATCH api/articles/:article_id", () => {
+        it("STATUS: 200 responds with a modified article", () => {
+          return request(app)
+            .patch("/api/articles/1")
+            .send({ inc_votes: 3 })
+            .expect(200)
+            .then(res => {
+              expect(res.body.article.votes).to.equal(103);
+            });
+        });
       });
     });
   });
