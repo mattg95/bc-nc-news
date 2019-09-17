@@ -7,7 +7,7 @@ const connection = require("../connections.js");
 describe("/api", () => {
   beforeEach(() => connection.seed.run());
   after(() => connection.destroy());
-  describe("GET", () => {
+  describe("GET api", () => {
     it("STATUS:200 responds with the API", () => {
       return request(app)
         .get("/api")
@@ -80,7 +80,7 @@ describe("/api", () => {
           });
       });
       describe("PATCH api/articles/:article_id", () => {
-        it("STATUS: 200 responds with a modified article", () => {
+        it("STATUS: 200 responds with an article with vote count increased", () => {
           return request(app)
             .patch("/api/articles/1")
             .send({ inc_votes: 3 })
@@ -89,7 +89,30 @@ describe("/api", () => {
               expect(res.body.article.votes).to.equal(103);
             });
         });
+        it("STATUS: 200 responds with an article with vote count decreased", () => {
+          return request(app)
+            .patch("/api/articles/1")
+            .send({ inc_votes: -10 })
+            .expect(200)
+            .then(res => {
+              expect(res.body.article.votes).to.equal(90);
+            });
+        });
       });
+    });
+  });
+  describe("POST api/articles/:articleId/comments", () => {
+    it("STATUS: 201 responds with a newly posted comment", () => {
+      return request(app)
+        .post("/api/articles/1/comments")
+        .send({ username: "butter_bridge", body: "I strongly object to this" })
+        .expect(201)
+        .then(res => {
+          expect(res.body.comment).to.include({
+            article_id: 1,
+            body: "I strongly object to this"
+          });
+        });
     });
   });
 });

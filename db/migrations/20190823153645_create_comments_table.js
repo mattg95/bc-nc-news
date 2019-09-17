@@ -5,7 +5,7 @@ exports.up = function(knex) {
     comments.string("author").references("users.username");
     comments.integer("article_id").references("articles.article_id");
     comments.integer("votes").defaultTo(0);
-    comments.timestamp("created_at"); //.defaultTo(Date.now());
+    comments.timestamp("created_at").defaultTo(knex.fn.now());
     comments.text("body").notNullable();
   });
 };

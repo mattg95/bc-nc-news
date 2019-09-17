@@ -15,3 +15,13 @@ exports.patchArticles = (req, res, next) => {
     .increment({ votes: req.body.inc_votes })
     .returning("*");
 };
+
+exports.writeComment = (req, res, next) => {
+  return connection("comments")
+    .insert({
+      author: req.body.username,
+      article_id: req.params.article_id,
+      body: req.body.body
+    })
+    .returning("*");
+};

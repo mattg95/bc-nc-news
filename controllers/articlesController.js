@@ -1,4 +1,8 @@
-const { returnArticles, patchArticles } = require("../models/articlesModels");
+const {
+  returnArticles,
+  patchArticles,
+  writeComment
+} = require("../models/articlesModels");
 
 exports.sendArticles = (req, res, next) => {
   console.log("inside sendArticles");
@@ -13,5 +17,13 @@ exports.patchArticles = (req, res, next) => {
   patchArticles(req).then(articleRes => {
     const [article] = articleRes;
     res.status(200).send({ article: article });
+  });
+};
+
+exports.postComment = (req, res, next) => {
+  console.log("inside postComment");
+  writeComment(req).then(commentRes => {
+    const [comment] = commentRes;
+    res.status(201).send({ comment: comment });
   });
 };
