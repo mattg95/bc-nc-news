@@ -25,3 +25,9 @@ exports.writeComment = (req, res, next) => {
     })
     .returning("*");
 };
+
+exports.fetchComments = article_id => {
+  return connection("comments")
+    .select("*")
+    .where("article_id", article_id);
+};

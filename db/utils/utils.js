@@ -18,7 +18,8 @@ exports.makeRefObj = list => {
 };
 
 exports.formatComments = (comments, articleRef) => {
-  return comments.map(comment => {
+  return comments.map(oldComment => {
+    const comment = { ...oldComment };
     comment.author = comment.created_by;
     delete comment.created_by;
     const title = comment.belongs_to;

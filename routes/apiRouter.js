@@ -10,7 +10,6 @@ const articlesRouter = require("./articlesRouter.js");
 
 apiRouter.get("/", (req, res) => {
   console.log("in API!");
-  res.status(200).send({ message: "welcome to the API" });
 });
 
 //---

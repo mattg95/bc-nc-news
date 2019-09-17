@@ -1,5 +1,4 @@
 exports.up = function(knex) {
-  console.log("creating articles table...");
   return knex.schema.createTable("users", users => {
     users
       .string("username", 50)
@@ -11,6 +10,5 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-  console.log("deleting articles table...");
   return knex.schema.dropTable("users");
 };
