@@ -6,14 +6,14 @@ const {
 } = require("../models/articlesModels");
 
 exports.sendArticles = (req, res, next) => {
-  returnArticles(req.params).then(articleRes => {
+  returnArticles(req.params.article_id).then(articleRes => {
     const [article] = articleRes;
     res.status(200).send({ article: article });
   });
 };
 
 exports.patchArticles = (req, res, next) => {
-  patchArticles(req).then(articleRes => {
+  patchArticles(req.params.article_id, req.body.inc_votes).then(articleRes => {
     const [article] = articleRes;
     res.status(200).send({ article: article });
   });
@@ -27,7 +27,7 @@ exports.postComment = (req, res, next) => {
 };
 
 exports.getComments = (req, res, next) => {
-  fetchComments(req.params.article_id).then(commentRes => {
+  fetchComments(req.params.article_id, req.query).then(commentRes => {
     res.status(200).send({ comments: commentRes });
   });
 };

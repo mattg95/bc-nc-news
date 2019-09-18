@@ -1,22 +1,22 @@
 const connection = require("../connections.js");
 
-exports.returnArticles = (req, res, next) => {
+exports.returnArticles = article_id => {
   return connection
     .select("*")
     .from("articles")
-    .where({ article_id: req.article_id });
+    .where({ article_id: article_id });
 };
 
-exports.patchArticles = (req, res, next) => {
+exports.patchArticles = (article_id, inc_votes) => {
   return connection
     .select("*")
     .from("articles")
-    .where({ article_id: req.params.article_id })
-    .increment({ votes: req.body.inc_votes })
+    .where({ article_id: article_id })
+    .increment({ votes: inc_votes })
     .returning("*");
 };
 
-exports.writeComment = (req, res, next) => {
+exports.writeComment = req => {
   return connection("comments")
     .insert({
       author: req.body.username,
@@ -26,8 +26,9 @@ exports.writeComment = (req, res, next) => {
     .returning("*");
 };
 
-exports.fetchComments = article_id => {
+exports.fetchComments = (article_id, query) => {
   return connection("comments")
     .select("*")
-    .where("article_id", article_id);
+    .where("article_id", article_id)
+    .orderBy(query.sort_by || "created_at", query.order_by || "desc");
 };
