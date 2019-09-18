@@ -2,7 +2,8 @@ const {
   returnArticles,
   patchArticles,
   writeComment,
-  fetchComments
+  fetchComments,
+  fetchAllArticles
 } = require("../models/articlesModels");
 
 exports.sendArticles = (req, res, next) => {
@@ -29,5 +30,11 @@ exports.postComment = (req, res, next) => {
 exports.getComments = (req, res, next) => {
   fetchComments(req.params.article_id, req.query).then(commentRes => {
     res.status(200).send({ comments: commentRes });
+  });
+};
+
+exports.getAllArticles = (req, res, next) => {
+  fetchAllArticles().then(articles => {
+    res.status(200).send({ articles: articles });
   });
 };

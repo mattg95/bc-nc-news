@@ -145,4 +145,22 @@ describe("/api", () => {
       });
     });
   });
+  describe.only("GET:200 api/articles", () => {
+    it("STATUS: 200 responds with an object with an array of article objects", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(res => {
+          expect(res.body.articles[0]).to.have.keys(
+            "author",
+            "title",
+            "article_id",
+            "topic",
+            "created_at",
+            "votes",
+            "comment_count"
+          );
+        });
+    });
+  });
 });

@@ -4,10 +4,11 @@ const {
   sendArticles,
   patchArticles,
   postComment,
-  getComments
+  getComments,
+  getAllArticles
 } = require("../controllers/articlesController.js");
 
-console.log("inside articlesRouter");
+articlesRouter.route("/").get(getAllArticles);
 
 articlesRouter
   .route("/:article_id/comments")

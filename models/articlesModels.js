@@ -32,3 +32,18 @@ exports.fetchComments = (article_id, query) => {
     .where("article_id", article_id)
     .orderBy(query.sort_by || "created_at", query.order_by || "desc");
 };
+
+exports.fetchAllArticles = () => {
+  return connection("articles")
+    .select(
+      "articles.author",
+      "articles.title",
+      "articles.article_id",
+      "articles.topic",
+      "articles.created_at",
+      "articles.votes"
+    )
+    .count({ comment_count: "comments.article_id" })
+    .leftJoin("comments", "comments.article_id", "articles.article_id")
+    .groupBy("articles.article_id");
+};
