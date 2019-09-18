@@ -34,6 +34,9 @@ describe("/api", () => {
             "username",
             "name",
             "avatar_url"
+          )
+          expect(res.body.user.username).to.equal(
+            "butter_bridge"
           );
         });
     });
@@ -51,11 +54,14 @@ describe("/api", () => {
             "body",
             "created_at",
             "votes",
-            "topic"
+            "topic",
+            "comment_count"
           );
           expect(res.body.article).to.include({
             title: "Living in the shadow of a great man",
             author: "butter_bridge"
+          });
+           expect(res.body.article.article_id).to.equal(1)
           });
         });
     });
@@ -67,7 +73,18 @@ describe("/api", () => {
           .expect(200)
           .then(res => {
             expect(res.body.article.votes).to.equal(103);
+            expect(res.body.article).to.contain.keys(
+            "article_id",
+            "author",
+            "title",
+            "body",
+            "created_at",
+            "votes",
+            "topic",
+            "comment_count"
+          ); expect(res.body.article.article_id).to.equal(1)
           });
+
       });
       it("STATUS: 200 responds with vote count decreased", () => {
         return request(app)
@@ -76,6 +93,16 @@ describe("/api", () => {
           .expect(200)
           .then(res => {
             expect(res.body.article.votes).to.equal(90);
+            expect(res.body.article).to.contain.keys(
+            "article_id",
+            "author",
+            "title",
+            "body",
+            "created_at",
+            "votes",
+            "topic",
+            "comment_count"
+          ); expect(res.body.article.article_id).to.equal(1)
           });
       });
     });
@@ -121,6 +148,7 @@ describe("/api", () => {
             expect(res.body.comments).to.be.sortedBy("created_at", {
               descending: true
             });
+          }); 
           });
       });
       it("STATUS: 200 array accepts a sort_by query and sorts the array correspondingly", () => {
@@ -145,7 +173,7 @@ describe("/api", () => {
       });
     });
   });
-  describe.only("GET:200 api/articles", () => {
+  describe("GET:200 api/articles", () => {
     it("STATUS: 200 responds with an object with an array of article objects", () => {
       return request(app)
         .get("/api/articles")
@@ -160,6 +188,26 @@ describe("/api", () => {
             "votes",
             "comment_count"
           );
+        });
+    });
+    it("STATUS: 200 sorts by date descending by default", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(res => {
+          expect(res.body.articles).to.be.sortedBy("created_at", {
+            descending: true
+          });
+        });
+    });
+    it("STATUS: 200 can accepts a sort_by query which orders the array accordingly", () => {
+      return request(app)
+        .get("/api/articles?sort_by=comment_count")
+        .expect(200)
+        .then(res => {
+          expect(res.body.articles).to.be.sortedBy("comment_count", {
+            descending: true
+          });
         });
     });
   });

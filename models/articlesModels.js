@@ -1,39 +1,59 @@
 const connection = require("../connections.js");
 
-exports.returnArticles = article_id => {
-  return connection
-    .select("*")
-    .from("articles")
-    .where({ article_id: article_id });
+exports.returnArticles = id => {
+  return connection("articles")
+    .select(
+      "articles.author",
+      "articles.title",
+      "articles.article_id",
+      "articles.topic",
+      "articles.body",
+      "articles.created_at",
+      "articles.votes"
+    )
+    .count({ comment_count: "comments.article_id" })
+    .leftJoin("comments", "comments.article_id", "articles.article_id")
+    .groupBy("articles.article_id")
+    .where("articles.article_id" , id).returning("*")
 };
 
-exports.patchArticles = (article_id, inc_votes) => {
-  return connection
-    .select("*")
-    .from("articles")
-    .where({ article_id: article_id })
-    .increment({ votes: inc_votes })
-    .returning("*");
+exports.patchArticles = (id, inc_votes) => {
+   return connection("articles")
+     .select(
+       "articles.author",
+       "articles.title",
+       "articles.article_id",
+       "articles.topic",
+       "articles.body",
+       "articles.created_at",
+       "articles.votes"
+     )
+     .count({ comment_count: "comments.article_id" })
+     .leftJoin("comments", "comments.article_id", "articles.article_id")
+     .groupBy("articles.article_id")
+     .where("articles.article_id" , id).returning("*")
+     .increment({ votes: inc_votes }).returning("*")
+
 };
 
-exports.writeComment = req => {
+exports.writeComment = (username, article_id, body)=> {
   return connection("comments")
     .insert({
-      author: req.body.username,
-      article_id: req.params.article_id,
-      body: req.body.body
+      author: username,
+      article_id: article_id,
+      body: body
     })
     .returning("*");
 };
 
-exports.fetchComments = (article_id, query) => {
+exports.fetchComments = (article_id,sort_by,order_by ) => {
   return connection("comments")
     .select("*")
     .where("article_id", article_id)
-    .orderBy(query.sort_by || "created_at", query.order_by || "desc");
+    .orderBy(sort_by || "created_at", order_by || "desc");
 };
 
-exports.fetchAllArticles = () => {
+exports.fetchAllArticles = (sort_by, order) => {
   return connection("articles")
     .select(
       "articles.author",
@@ -45,5 +65,6 @@ exports.fetchAllArticles = () => {
     )
     .count({ comment_count: "comments.article_id" })
     .leftJoin("comments", "comments.article_id", "articles.article_id")
-    .groupBy("articles.article_id");
+    .groupBy("articles.article_id")
+    .orderBy(sort_by || "created_at", order || "desc");
 };
