@@ -207,7 +207,7 @@ describe("/api", () => {
           });
         });
     });
-    it("STATUS: 200 accepts a author query which filters the articls by the passed author query", () => {
+    it("STATUS: 200 accepts a author query which filters the articles by the passed author query", () => {
       return request(app)
         .get("/api/articles?author=butter_bridge")
         .expect(200)
@@ -216,7 +216,7 @@ describe("/api", () => {
           expect(res.body.articles[1].author).to.equal("butter_bridge");
         });
     });
-    it("STATUS: 200 accepts a topic query which filters the articls by the passed topic query", () => {
+    it("STATUS: 200 accepts a topic query which filters the articles by the passed topic query", () => {
       return request(app)
         .get("/api/articles?topic=cats")
         .expect(200)
