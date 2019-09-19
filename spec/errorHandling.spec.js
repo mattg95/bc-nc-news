@@ -14,7 +14,7 @@ chai.use(chaiSorted);
 describe("/", () => {
   beforeEach(() => connection.seed.run());
   after(() => connection.destroy());
-  describe("ALL /not_a_route", () => {
+  describe("ALL METHODS /not_a_route", () => {
     it("STATUS:404 get request route not found", () => {
       const methods = ["post", "patch", "delete", "get"];
       const promises = methods.map(method => {
@@ -27,7 +27,7 @@ describe("/", () => {
       });
       return Promise.all(promises);
     });
-    describe("/api/not_a_route", () => {
+    describe("ALL METHODS /api/not_a_route", () => {
       it("STATUS:404 get request route not found", () => {
         const methods = ["post", "patch", "delete", "get"];
         const promises = methods.map(method => {
@@ -40,10 +40,10 @@ describe("/", () => {
         });
         return Promise.all(promises);
       });
-      describe.only("/articles", () => {
-        describe("GET AND POST /api/articles/id_not_found", () => {
+      describe("/articles", () => {
+        describe.only("GET AND PATCH /api/articles/id_not_found", () => {
           it("STATUS 404 route not found", () => {
-            const methods = ["post", "get"];
+            const methods = ["patch", "get"];
             const promises = methods.map(method => {
               return request(app)
                 [method]("/api/articles/666")
@@ -55,20 +55,29 @@ describe("/", () => {
             return Promise.all(promises);
           });
         });
-        describe("GET AND POST/api/articles/wrong_format_id", () => {
+        describe("GET AND PATCH /api/articles/wrong_format_id", () => {
           it("STATUS:400 bad request", () => {
-            it("STATUS 404 route not found", () => {
-              const methods = ["post", "get"];
-              const promises = methods.map(method => {
-                return request(app)
-                  [method]("/api/articles/six")
-                  .expect(404)
-                  .then(res => {
-                    expect(res.body.msg).to.equal("route not found");
-                  });
-              });
-              return Promise.all(promises);
+            const methods = ["get, patch"];
+            const promises = methods.map(method => {
+              return request(app)
+                [method]("/api/articles/six")
+                .expect(400)
+                .then(res => {
+                  console.log(res.body);
+                  expect(res.body.msg).to.equal("bad request");
+                });
             });
+            return Promise.all(promises);
+          });
+        });
+        xdescribe("PATCH /api/articles/article_id", () => {
+          it("STATUS: 400 bad request", () => {
+            return request(app)
+              .post("/api/articles/1")
+              .send.expect(400)
+              .then(res => {
+                expect(res.body.msg).to.equal("bad request");
+              });
           });
         });
       });

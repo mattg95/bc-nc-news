@@ -18,7 +18,7 @@ exports.returnArticles = id => {
     .returning("*");
 };
 
-exports.patchArticles = (id, inc_votes) => {
+exports.changeArticles = (id, inc_votes) => {
   return connection("articles")
     .select(
       "articles.author",

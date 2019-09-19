@@ -1,6 +1,6 @@
 const {
   returnArticles,
-  patchArticles,
+  changeArticles,
   writeComment,
   fetchComments,
   fetchAllArticles
@@ -8,26 +8,37 @@ const {
 
 exports.sendArticles = (req, res, next) => {
   if (!Number.isInteger(+req.params.article_id)) {
-    return Promise.reject({ status: 400, msg: "bad request" }).catch(next);
+    return next({ status: 400, msg: "bad request" });
   } else {
     returnArticles(req.params.article_id)
       .then(articleRes => {
         const [article] = articleRes;
         if (!article) {
-          return Promise.reject({ status: 404, msg: "route not found" });
-        } else article.comment_count = +article.comment_count;
-        res.status(200).send({ article: article });
+          return next({ status: 404, msg: "route not found" });
+        } else {
+          article.comment_count = +article.comment_count;
+          res.status(200).send({ article: article });
+        }
       })
       .catch(next);
   }
 };
-
 exports.patchArticles = (req, res, next) => {
-  patchArticles(req.params.article_id, req.body.inc_votes).then(articleRes => {
-    const [article] = articleRes;
-    article.comment_count = +article.comment_count;
-    res.status(200).send({ article: article });
-  });
+  if (!Number.isInteger(+req.params.article_id)) {
+    return next({ status: 400, msg: "bad request" });
+  } else {
+    changeArticles(req.params.article_id, req.body.inc_votes)
+      .then(articleRes => {
+        const [article] = articleRes;
+        if (!article) {
+          return next({ status: 404, msg: "route not found" });
+        } else {
+          article.comment_count = +article.comment_count;
+          res.status(200).send({ article: article });
+        }
+      })
+      .catch(next);
+  }
 };
 
 exports.getAllArticles = (req, res, next) => {
