@@ -55,7 +55,7 @@ exports.fetchComments = (article_id, sort_by, order_by) => {
     .orderBy(sort_by || "created_at", order_by || "desc");
 };
 
-exports.fetchAllArticles = (sort_by, order) => {
+exports.fetchAllArticles = (sort_by, order, author, topic) => {
   return connection("articles")
     .select(
       "articles.author",
@@ -69,5 +69,9 @@ exports.fetchAllArticles = (sort_by, order) => {
     .leftJoin("comments", "comments.article_id", "articles.article_id")
     .groupBy("articles.article_id")
     .orderBy(sort_by || "created_at", order || "desc")
+    .modify(query => {
+      if (author) query.where("articles.author", author);
+      if (topic) query.where("articles.topic", topic);
+    })
     .returning("*");
 };

@@ -197,7 +197,7 @@ describe("/api", () => {
           });
         });
     });
-    it("STATUS: 200 can accepts a sort_by query which orders the array accordingly", () => {
+    it("STATUS: 200 accepts a sort_by query which orders the array accordingly", () => {
       return request(app)
         .get("/api/articles?sort_by=comment_count")
         .expect(200)
@@ -205,6 +205,23 @@ describe("/api", () => {
           expect(res.body.articles).to.be.sortedBy("comment_count", {
             descending: true
           });
+        });
+    });
+    it("STATUS: 200 accepts a author query which filters the articls by the passed author query", () => {
+      return request(app)
+        .get("/api/articles?author=butter_bridge")
+        .expect(200)
+        .then(res => {
+          expect(res.body.articles[0].author).to.equal("butter_bridge");
+          expect(res.body.articles[1].author).to.equal("butter_bridge");
+        });
+    });
+    it("STATUS: 200 accepts a topic query which filters the articls by the passed topic query", () => {
+      return request(app)
+        .get("/api/articles?topic=cats")
+        .expect(200)
+        .then(res => {
+          expect(res.body.articles[0].topic).to.equal("cats");
         });
     });
   });

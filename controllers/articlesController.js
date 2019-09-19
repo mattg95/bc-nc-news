@@ -23,7 +23,12 @@ exports.patchArticles = (req, res, next) => {
 };
 
 exports.getAllArticles = (req, res, next) => {
-  fetchAllArticles(req.query.sort_by, req.query.order).then(articles => {
+  fetchAllArticles(
+    req.query.sort_by,
+    req.query.order,
+    req.query.author,
+    req.query.topic
+  ).then(articles => {
     articles.map(article => {
       article.comment_count = +article.comment_count;
     });
