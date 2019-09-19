@@ -14,29 +14,31 @@ exports.returnArticles = id => {
     .count({ comment_count: "comments.article_id" })
     .leftJoin("comments", "comments.article_id", "articles.article_id")
     .groupBy("articles.article_id")
-    .where("articles.article_id" , id).returning("*")
+    .where("articles.article_id", id)
+    .returning("*");
 };
 
 exports.patchArticles = (id, inc_votes) => {
-   return connection("articles")
-     .select(
-       "articles.author",
-       "articles.title",
-       "articles.article_id",
-       "articles.topic",
-       "articles.body",
-       "articles.created_at",
-       "articles.votes"
-     )
-     .count({ comment_count: "comments.article_id" })
-     .leftJoin("comments", "comments.article_id", "articles.article_id")
-     .groupBy("articles.article_id")
-     .where("articles.article_id" , id).returning("*")
-     .increment({ votes: inc_votes }).returning("*")
-
+  return connection("articles")
+    .select(
+      "articles.author",
+      "articles.title",
+      "articles.article_id",
+      "articles.topic",
+      "articles.body",
+      "articles.created_at",
+      "articles.votes"
+    )
+    .count({ comment_count: "comments.article_id" })
+    .leftJoin("comments", "comments.article_id", "articles.article_id")
+    .groupBy("articles.article_id")
+    .where("articles.article_id", id)
+    .returning("*")
+    .increment({ votes: inc_votes })
+    .returning("*");
 };
 
-exports.writeComment = (username, article_id, body)=> {
+exports.writeComment = (username, article_id, body) => {
   return connection("comments")
     .insert({
       author: username,
@@ -46,7 +48,7 @@ exports.writeComment = (username, article_id, body)=> {
     .returning("*");
 };
 
-exports.fetchComments = (article_id,sort_by,order_by ) => {
+exports.fetchComments = (article_id, sort_by, order_by) => {
   return connection("comments")
     .select("*")
     .where("article_id", article_id)
@@ -66,5 +68,6 @@ exports.fetchAllArticles = (sort_by, order) => {
     .count({ comment_count: "comments.article_id" })
     .leftJoin("comments", "comments.article_id", "articles.article_id")
     .groupBy("articles.article_id")
-    .orderBy(sort_by || "created_at", order || "desc");
+    .orderBy(sort_by || "created_at", order || "desc")
+    .returning("*");
 };
