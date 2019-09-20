@@ -1,8 +1,6 @@
 const {
   returnArticles,
   changeArticles,
-  writeComment,
-  fetchComments,
   fetchAllArticles
 } = require("../models/articlesModels");
 
@@ -66,24 +64,5 @@ exports.getAllArticles = (req, res, next) => {
         articles: articles
       })
       .catch(next);
-  });
-};
-
-exports.postComment = (req, res, next) => {
-  writeComment(req.body.username, req.params.article_id, req.body.body).then(
-    commentRes => {
-      const [comment] = commentRes;
-      res.status(201).send({ comment: comment });
-    }
-  );
-};
-
-exports.getComments = (req, res, next) => {
-  fetchComments(
-    req.params.article_id,
-    req.query.sort_by,
-    req.query.order_by
-  ).then(commentRes => {
-    res.status(200).send({ comments: commentRes });
   });
 };

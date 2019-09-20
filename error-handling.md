@@ -69,7 +69,10 @@ Bear in mind, handling bad inputs from clients doesn't necessarily have to lead 
 
 ### POST `/api/articles/:article_id/comments`
 
--
+-Bad `article_id` (e.g. `/dog`)
+
+- Well formed `article_id` that doesn't exist in the database (e.g. `/999999`)
+- no comment_id
 
 ### GET `/api/articles/:article_id/comments`
 

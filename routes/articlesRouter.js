@@ -3,10 +3,14 @@ const express = require("express");
 const {
   sendArticles,
   patchArticles,
-  postComment,
-  getComments,
+
   getAllArticles
 } = require("../controllers/articlesController.js");
+
+const {
+  postComment,
+  getComments
+} = require("../controllers/commentsController");
 
 articlesRouter.route("/").get(getAllArticles);
 
