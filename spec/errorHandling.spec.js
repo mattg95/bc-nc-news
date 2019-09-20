@@ -42,6 +42,16 @@ describe("/", () => {
           return Promise.all(promises);
         });
       });
+      describe("/topics", () => {
+        describe("GET /api/topics", () => {
+          it(" STATUS:400 bad request", () => {
+            return request(app)
+              .get("/api/topics/notatopic")
+              .expect(404)
+              .then(res => expect(res.body.msg).to.equal("route not found"));
+          });
+        });
+      });
       describe("/users", () => {
         describe("GET /api/users:username", () => {
           it(" STATUS:400 user not found", () => {
@@ -196,6 +206,32 @@ describe("/", () => {
                 return request(app)
                   .post("/api/articles/1/comments")
                   .send({ username: "lurker" })
+                  .expect(400)
+                  .then(res => {
+                    expect(res.body.msg).to.equal("bad request");
+                  });
+              });
+            });
+            describe("POST /api/articles:article_id (username does not match a user)", () => {
+              it("STATUS: 400 bad request", () => {
+                return request(app)
+                  .post("/api/articles/1/comments")
+                  .send({ username: "bad username" })
+                  .expect(400)
+                  .then(res => {
+                    expect(res.body.msg).to.equal("bad request");
+                  });
+              });
+            });
+            describe("POST /api/articles:article_id (extra properties on request)", () => {
+              it("STATUS: 400 bad request", () => {
+                return request(app)
+                  .post("/api/articles/1/comments")
+                  .send({
+                    username: "lurker",
+                    body: "down with this sort of thing!",
+                    mitch: "present"
+                  })
                   .expect(400)
                   .then(res => {
                     expect(res.body.msg).to.equal("bad request");

@@ -47,7 +47,7 @@ Bear in mind, handling bad inputs from clients doesn't necessarily have to lead 
 
 ### GET `/api/topics`
 
--
+-topic doesn't exist in our database
 
 ### GET `/api/users/:username`
 

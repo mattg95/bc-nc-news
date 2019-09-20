@@ -8,6 +8,11 @@ exports.postComment = (req, res, next) => {
       msg: "bad request"
     });
   }
+  if (Object.keys(req.body).length != 2)
+    return next({
+      status: 400,
+      msg: "bad request"
+    });
   if (!Number.isInteger(+req.params.article_id)) {
     return next({ status: 400, msg: "bad request" });
   } else {
