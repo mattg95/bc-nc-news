@@ -33,7 +33,6 @@ exports.changeArticles = (id, inc_votes) => {
     .leftJoin("comments", "comments.article_id", "articles.article_id")
     .groupBy("articles.article_id")
     .where("articles.article_id", id)
-    .returning("*")
     .increment({ votes: inc_votes })
     .returning("*");
 };

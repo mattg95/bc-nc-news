@@ -5,7 +5,7 @@ This is an incomplete guide to the possible errors that may happen in your app. 
 Think about what could go wrong for each route, and the HTTP status code should be sent to the client in each case.
 For each thing that could go wrong, make a test with your expected status code and then make sure that possibility is handled.
 
-Bear in mind, handling bad inputs from clients doesn't necessarily have to lead to a 4** status code. Handling can include using default behaviours or even ignoring parts of the request.
+Bear in mind, handling bad inputs from clients doesn't necessarily have to lead to a 4\*\* status code. Handling can include using default behaviours or even ignoring parts of the request.
 
 ---
 
@@ -29,9 +29,13 @@ Bear in mind, handling bad inputs from clients doesn't necessarily have to lead 
 
 ## Unavailable Routes
 
-### GET `/not-a-route`
+### ALL`/not-a-route`
 
-- Status:
+- Status: 404 route not found
+
+### ALL`api/not-a-route`
+
+- Status: 404 route not found
 
 ### PATCH / PUT / POST / DELETE... `/api/articles` etc...
 
@@ -47,7 +51,7 @@ Bear in mind, handling bad inputs from clients doesn't necessarily have to lead 
 
 ### GET `/api/users/:username`
 
--
+-Username doesn't exist in out databse
 
 ### GET `/api/articles/:article_id`
 
@@ -56,6 +60,9 @@ Bear in mind, handling bad inputs from clients doesn't necessarily have to lead 
 
 ### PATCH `/api/articles/:article_id`
 
+- Bad `article_id` (e.g. `/dog`)
+- Well formed `article_id` that doesn't exist in the database (e.g. `/999999`)
+- No request entered at all
 - No `inc_votes` on request body
 - Invalid `inc_votes` (e.g. `{ inc_votes : "cat" }`)
 - Some other property on request body (e.g. `{ inc_votes : 1, name: 'Mitch' }`)

@@ -24,6 +24,15 @@ exports.sendArticles = (req, res, next) => {
   }
 };
 exports.patchArticles = (req, res, next) => {
+  if (!req.body) return next({ status: 400, msg: "bad request" });
+  if (!req.body.inc_votes) return next({ status: 400, msg: "bad request" });
+  if (!Number.isInteger(req.body.inc_votes))
+    return next({ status: 400, msg: "bad request" });
+  if (Object.keys(req.body).length != 1)
+    return next({
+      status: 400,
+      msg: "bad request"
+    });
   if (!Number.isInteger(+req.params.article_id)) {
     return next({ status: 400, msg: "bad request" });
   } else {
