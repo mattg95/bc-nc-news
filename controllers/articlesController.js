@@ -63,6 +63,6 @@ exports.getAllArticles = (req, res, next) => {
       .send({
         articles: articles
       })
+  })
       .catch(next);
-  });
 };
