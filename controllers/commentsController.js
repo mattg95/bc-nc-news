@@ -1,25 +1,20 @@
 const { writeComment, fetchComments } = require("../models/commentsModels");
 
 exports.postComment = (req, res, next) => {
-  console.log(req.body);
-  if (!req.body.hasOwnProperty("username")) {
+  if (
+    !req.body.hasOwnProperty("username") ||
+    !req.body.hasOwnProperty("body") ||
+    !Number.isInteger(+req.params.article_id)
+  ) {
     return next({
       status: 400,
       msg: "bad request"
     });
-  }
-  if (Object.keys(req.body).length != 2)
-    return next({
-      status: 400,
-      msg: "bad request"
-    });
-  if (!Number.isInteger(+req.params.article_id)) {
-    return next({ status: 400, msg: "bad request" });
   } else {
     writeComment(req.body.username, req.params.article_id, req.body.body)
       .then(commentRes => {
         const [comment] = commentRes;
-        res.status(201).send({ comment: comment });
+        res.status(201).send({ comment });
       })
       .catch(next);
   }
