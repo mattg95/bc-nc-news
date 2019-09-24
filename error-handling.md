@@ -76,7 +76,11 @@ Bear in mind, handling bad inputs from clients doesn't necessarily have to lead 
 
 ### GET `/api/articles/:article_id/comments`
 
--
+- Bad `article_id` (e.g. `/dog`)
+- Well formed `article_id` that doesn't exist in the database (e.g. `/999999`)
+  Bad queries:
+  - `sort_by` a column that doesn't exist
+  - `order` !== "asc" / "desc"
 
 ### GET `/api/articles`
 

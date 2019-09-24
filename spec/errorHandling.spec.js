@@ -190,7 +190,7 @@ describe("/", () => {
                   });
               });
             });
-            describe("POST /api/articles:article_id (no username key present)", () => {
+            describe("POST /api/articles:article_id/comments (no username key present)", () => {
               it("STATUS: 400 bad request", () => {
                 return request(app)
                   .post("/api/articles/1/comments")
@@ -201,7 +201,7 @@ describe("/", () => {
                   });
               });
             });
-            describe("POST /api/articles:article_id (no body key present)", () => {
+            describe("POST /api/articles:article_id/comments (no body key present)", () => {
               it("STATUS: 400 bad request", () => {
                 return request(app)
                   .post("/api/articles/1/comments")
@@ -212,7 +212,7 @@ describe("/", () => {
                   });
               });
             });
-            describe("POST /api/articles:article_id (username does not match a user)", () => {
+            describe("POST /api/articles:article_id/comments  (username does not match a user)", () => {
               it("STATUS: 400 bad request", () => {
                 return request(app)
                   .post("/api/articles/1/comments")
@@ -223,7 +223,7 @@ describe("/", () => {
                   });
               });
             });
-            describe("POST /api/articles:article_id (extra properties on request)", () => {
+            describe("POST /api/articles:article_id/comments (extra properties on request)", () => {
               it("STATUS: 400 bad request", () => {
                 return request(app)
                   .post("/api/articles/1/comments")
@@ -239,8 +239,31 @@ describe("/", () => {
               });
             });
           });
+          describe("GET /api/articles:wrong_format_id", () => {
+            it("STATUS:400 bad request", () => {
+              return request(app)
+                .get("/api/articles/six")
+                .expect(400)
+                .then(res => {
+                  expect(res.body.msg).to.equal("bad request");
+                });
+            });
+          });
+          xdescribe("GET /api/articles:id_not_found/comments", () => {
+            it("STATUS 404 route not found", () => {
+              return request(app)
+                .get("/api/articles/666/comments")
+                .expect(404)
+                .then(res => {
+                  expect(res.body.msg).to.equal("route not found");
+                });
+            });
+          });
         });
       });
     });
   });
 });
+
+
+

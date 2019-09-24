@@ -8,13 +8,10 @@ exports.formatDate = list => {
 };
 
 exports.makeRefObj = list => {
-  let obj = {};
-  for (let i = 0; i < list.length; i++) {
-    const id = list[i].article_id;
-    const title = list[i].title;
-    obj[title] = id;
-  }
-  return obj;
+  return list.reduce((acc, curr) => {
+    acc[curr.title] = curr.article_id;
+    return acc;
+  }, {});
 };
 
 exports.formatComments = (comments, articleRef) => {
