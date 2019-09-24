@@ -54,15 +54,14 @@ exports.getAllArticles = (req, res, next) => {
     req.query.order,
     req.query.author,
     req.query.topic
-  ).then(articles => {
-    articles.map(article => {
-      article.comment_count = +article.comment_count;
-    });
-    res
-      .status(200)
-      .send({
+  )
+    .then(articles => {
+      articles.map(article => {
+        article.comment_count = +article.comment_count;
+      });
+      res.status(200).send({
         articles: articles
-      })
-  })
-      .catch(next);
+      });
+    })
+    .catch(next);
 };

@@ -26,11 +26,9 @@ exports.postComment = (req, res, next) => {
 };
 
 exports.getComments = (req, res, next) => {
-  fetchComments(
-    req.params.article_id,
-    req.query.sort_by,
-    req.query.order_by
-  ).then(commentRes => {
-    res.status(200).send({ comments: commentRes });
-  });
+  fetchComments(req.params.article_id, req.query.sort_by, req.query.order_by)
+    .then(commentRes => {
+      res.status(200).send({ comments: commentRes });
+    })
+    .catch(next);
 };
