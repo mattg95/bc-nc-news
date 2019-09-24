@@ -15,7 +15,16 @@ exports.returnArticles = id => {
     .leftJoin("comments", "comments.article_id", "articles.article_id")
     .groupBy("articles.article_id")
     .where("articles.article_id", id)
-    .returning("*");
+    .returning("*")
+    .then(articleRes => {
+      const [article] = articleRes;
+      if (!article) {
+        return next({ status: 404, msg: "route not found" });
+      } else {
+        article.comment_count = +article.comment_count;
+        return article;
+      }
+    });
 };
 
 exports.changeArticles = (id, inc_votes) => {
@@ -34,7 +43,16 @@ exports.changeArticles = (id, inc_votes) => {
     .groupBy("articles.article_id")
     .where("articles.article_id", id)
     .increment({ votes: inc_votes })
-    .returning("*");
+    .returning("*")
+    .then(articleRes => {
+      const [article] = articleRes;
+      if (!article) {
+        return next({ status: 404, msg: "route not found" });
+      } else {
+        article.comment_count = +article.comment_count;
+        return article;
+      }
+    });
 };
 
 exports.fetchAllArticles = (sort_by, order, author, topic) => {
@@ -55,5 +73,11 @@ exports.fetchAllArticles = (sort_by, order, author, topic) => {
       if (author) query.where("articles.author", author);
       if (topic) query.where("articles.topic", topic);
     })
-    .returning("*");
+    .returning("*")
+    .then(articles => {
+      articles.map(article => {
+        article.comment_count = +article.comment_count;
+      });
+      return articles;
+    });
 };
