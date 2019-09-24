@@ -54,7 +54,7 @@ describe("/", () => {
       });
       describe("/users", () => {
         describe("GET /api/users:username", () => {
-          it(" STATUS:400 user not found", () => {
+          it(" STATUS:404 user not found", () => {
             return request(app)
               .get("/api/users/notauser")
               .expect(404)
