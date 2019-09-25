@@ -3,7 +3,6 @@ const express = require("express");
 const {
   sendArticles,
   patchArticles,
-
   getAllArticles
 } = require("../controllers/articlesController.js");
 

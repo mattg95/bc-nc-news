@@ -11,7 +11,7 @@ exports.getArticles = article_id => {
     .then(articleRes => {
       const [article] = articleRes;
       if (!article) {
-        return next({ status: 404, msg: "route not found" });
+        return Promise.reject({ status: 404, msg: "route not found" });
       } else {
         article.comment_count = +article.comment_count;
         return article;
@@ -39,7 +39,7 @@ exports.changeArticles = (article_id, inc_votes) => {
     .then(articleRes => {
       const [article] = articleRes;
       if (!article) {
-        return next({ status: 404, msg: "route not found" });
+        return Promise.reject({ status: 404, msg: "route not found" });
       } else {
         article.comment_count = +article.comment_count;
         return article;

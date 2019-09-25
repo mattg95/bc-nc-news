@@ -8,9 +8,6 @@ const { expect } = chai;
 
 const request = require("supertest");
 
-const chaiSorted = require("chai-sorted");
-chai.use(chaiSorted);
-
 describe("/", () => {
   beforeEach(() => connection.seed.run());
   after(() => connection.destroy());

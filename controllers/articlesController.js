@@ -18,6 +18,7 @@ exports.patchArticles = (req, res, next) => {
   if (
     !req.body ||
     !req.body.inc_votes ||
+    Object.keys(req.body).length !== 1 ||
     !Number.isInteger(req.body.inc_votes) ||
     !Number.isInteger(+req.params.article_id)
   ) {

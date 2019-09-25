@@ -4,6 +4,7 @@ exports.postComment = (req, res, next) => {
   if (
     !req.body.hasOwnProperty("username") ||
     !req.body.hasOwnProperty("body") ||
+    Object.keys(req.body).length !== 2 ||
     !Number.isInteger(+req.params.article_id)
   ) {
     return next({
