@@ -62,7 +62,7 @@ describe("/", () => {
     });
     describe("/articles", () => {
       describe(":article_id", () => {
-        describe("GET  /api/articles:id_not_found", () => {
+        describe("GET  /api/comment/comment_id_not_found", () => {
           it("STATUS 404 route not found", () => {
             return request(app)
               .get("/api/articles/666")
@@ -83,7 +83,7 @@ describe("/", () => {
             });
         });
       });
-      describe("PATCH  /api/articles:id_not_found", () => {
+      describe("PATCH  /api/comment/comment_id_not_found", () => {
         it("STATUS 404 route not found", () => {
           return request(app)
             .patch("/api/articles/4000")
@@ -271,6 +271,74 @@ describe("/", () => {
       it("STATUS 400 bad request (order !== asc or desc)", () => {
         return request(app)
           .get("/api/articles?order=random")
+          .expect(400)
+          .then(res => {
+            expect(res.body.msg).to.equal("bad request");
+          });
+      });
+    });
+
+    ///////////////////////////
+    describe("PATCH  /api/comment/:comment_id (comment_id notfound)", () => {
+      it("STATUS 404 route not found", () => {
+        return request(app)
+          .patch("/api/comments/4000")
+          .send({ inc_votes: 3 })
+          .expect(404)
+          .then(res => {
+            expect(res.body.msg).to.equal("route not found");
+          });
+      });
+    });
+    describe("PATCH /comment/:comment_id wrong_format_id", () => {
+      it("STATUS:400 bad request", () => {
+        return request(app)
+          .patch("/api/comments/six")
+          .send({ inc_votes: 3 })
+          .expect(400)
+          .then(res => {
+            expect(res.body.msg).to.equal("bad request");
+          });
+      });
+    });
+    describe("PATCH /comment/:comment_id  (no data sent in patch request)", () => {
+      it("STATUS: 400 bad request", () => {
+        return request(app)
+          .patch("/api/comments/1")
+          .send()
+          .expect(400)
+          .then(res => {
+            expect(res.body.msg).to.equal("bad request");
+          });
+      });
+    });
+    describe("PATCH /api/comment/:comment_id (no inc_votes key patch request)", () => {
+      it("STATUS: 400 bad request", () => {
+        return request(app)
+          .patch("/api/comments/1")
+          .send({ randomKey: 2 })
+          .expect(400)
+          .then(res => {
+            expect(res.body.msg).to.equal("bad request");
+          });
+      });
+    });
+    describe("PATCH /api/comments/:comment_id (invalid inc_votes value)", () => {
+      it("STATUS: 400 bad request", () => {
+        return request(app)
+          .patch("/api/comments/1")
+          .send({ inc_votes: "yes" })
+          .expect(400)
+          .then(res => {
+            expect(res.body.msg).to.equal("bad request");
+          });
+      });
+    });
+    describe("PATCH /api/comments:comment_id (extra property on request body)", () => {
+      it("STATUS: 400 bad request", () => {
+        return request(app)
+          .patch("/api/comments/1")
+          .send({ inc_votes: 2, mitch: "present" })
           .expect(400)
           .then(res => {
             expect(res.body.msg).to.equal("bad request");
