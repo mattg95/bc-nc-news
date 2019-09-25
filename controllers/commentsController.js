@@ -52,5 +52,11 @@ exports.patchComment = (req, res, next) => {
 };
 
 exports.deleteComment = (req, res, next) => {
-  destroyComment(req.params.comment_id).catch(next);
+  return destroyComment(req.params.comment_id).then(commentRes => {
+    const [comment] = commentRes;
+    res
+      .status(204)
+      .send({ comment })
+    })
+    .catch(next);
 };

@@ -45,7 +45,6 @@ exports.changeComment = (comment_id, inc_votes) => {
 
 exports.destroyComment = comment_id => {
   return connection("comments")
-    .delete("*")
-    .from("comments")
-    .where("comment_id", comment_id);
+    .where("comment_id", comment_id)
+    .delete("*");
 };

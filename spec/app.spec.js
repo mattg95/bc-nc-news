@@ -226,8 +226,8 @@ describe("/api", () => {
         });
     });
   });
-  describe.only("PATCH /api/comments/:comment_id", () => {
-    it("PATCH /api/comments/:comment_id", () => {
+  describe("PATCH /api/comments/:comment_id", () => {
+    it("STATUS 200: responds with a changed comment", () => {
       return request(app)
         .patch("/api/comments/1")
         .send({ inc_votes: 3 })
@@ -246,13 +246,14 @@ describe("/api", () => {
           expect(res.body.comment.comment_id).to.equal(1);
         });
     });
-    it("DELETE /api/comments/:comment_id", () => {
+  });
+  describe("DELETE /api/comments/:comment_id", () => {
+    it.only("STATUS 204: comment deleted", () => {
       return request(app)
         .delete("/api/comments/1")
         .expect(204)
         .then(res => {
-          console.log(res.body);
-          expect(res.body.msg).to.equal("deleted");
+          expect(res.body).to.deep.equal({});
         });
     });
   });
