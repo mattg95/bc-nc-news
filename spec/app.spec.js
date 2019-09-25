@@ -122,7 +122,7 @@ describe("/api", () => {
         });
     });
   });
-  describe("GET api/articles:articleId/comments", () => {
+  describe.only("GET api/articles:articleId/comments", () => {
     it("STATUS: 200 responds with an object containing an array of comments", () => {
       return request(app)
         .get("/api/articles/1/comments")
@@ -170,7 +170,7 @@ describe("/api", () => {
         });
       });
   });
-  describe.only("GET:200 api/articles", () => {
+  describe("GET:200 api/articles", () => {
     it("STATUS: 200 responds with an object with an array of article objects", () => {
       return request(app)
         .get("/api/articles")
@@ -228,7 +228,22 @@ describe("/api", () => {
   });
   describe("PATCH /api/comments/:comment_id", () => {
     it("PATCH /api/comments/:comment_id", () => {
-      return request(app).patch();
+      return request(app)
+        .patch("/api/comments/1")
+        .send({ inc_votes: 3 })
+        .expect(200)
+        .then(res => {
+          expect(res.body.comments.votes).to.equal(3);
+          expect(res.body.comments).to.contain.keys(
+            "comment_id",
+            "author",
+            "article_id",
+            "votes",
+            "created_at",
+            "body"
+          );
+          expect(res.body.comment.comment_id).to.equal(1);
+        });
     });
   });
 });

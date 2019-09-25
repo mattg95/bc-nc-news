@@ -30,7 +30,8 @@ exports.getComments = (req, res, next) => {
   } else
     fetchComments(req.params.article_id, req.query.sort_by, req.query.order_by)
       .then(commentRes => {
-        res.status(200).send({ comments: commentRes });
+        const [comments] = commentRes;
+        res.status(200).send({ comments });
       })
       .catch(next);
 };
