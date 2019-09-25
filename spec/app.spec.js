@@ -222,7 +222,13 @@ describe("/api", () => {
         .expect(200)
         .then(res => {
           expect(res.body.articles[0].topic).to.equal("cats");
+          expect(res.body.articles.length).to.equal(1);
         });
     });
-  });
+  })describe("PATCH /api/comments/:comment_id", () => {
+    it("PATCH /api/comments/:comment_id", () => {
+      return request(app)
+      .patch()
+    })
+  })
 });

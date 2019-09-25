@@ -30,16 +30,17 @@ exports.patchArticles = (req, res, next) => {
 };
 
 exports.getAllArticles = (req, res, next) => {
-  fetchAllArticles(
-    req.query.sort_by,
-    req.query.order,
-    req.query.author,
-    req.query.topic
-  )
-    .then(articles =>
+  const { sort_by, order, author, topic } = req.query;
+  if (order) {
+    if (order !== "asc" || order !== "desc") {
+      return next({ status: 400, msg: "bad request" });
+    }
+  }
+  fetchAllArticles(sort_by, order, author, topic)
+    .then(articles => {
       res.status(200).send({
         articles
-      })
-    )
+      });
+    })
     .catch(next);
 };
