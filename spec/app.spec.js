@@ -170,7 +170,7 @@ describe("/api", () => {
         });
       });
   });
-  describe("GET:200 api/articles", () => {
+  describe.only("GET:200 api/articles", () => {
     it("STATUS: 200 responds with an object with an array of article objects", () => {
       return request(app)
         .get("/api/articles")
@@ -225,10 +225,10 @@ describe("/api", () => {
           expect(res.body.articles.length).to.equal(1);
         });
     });
-  })describe("PATCH /api/comments/:comment_id", () => {
+  });
+  describe("PATCH /api/comments/:comment_id", () => {
     it("PATCH /api/comments/:comment_id", () => {
-      return request(app)
-      .patch()
-    })
-  })
+      return request(app).patch();
+    });
+  });
 });

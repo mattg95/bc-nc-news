@@ -41,7 +41,14 @@ exports.changeArticles = (article_id, inc_votes) => {
 
 exports.fetchAllArticles = (sort_by, order, author, topic) => {
   return connection("articles")
-    .select("articles.*")
+    .select(
+      "articles.author",
+      "articles.title",
+      "articles.article_id",
+      "articles.topic",
+      "articles.created_at",
+      "articles.votes"
+    )
     .count({ comment_count: "comments.comment_id" })
     .leftJoin("comments", "comments.article_id", "articles.article_id")
     .groupBy("articles.article_id")
