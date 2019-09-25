@@ -233,7 +233,6 @@ describe("/api", () => {
         .send({ inc_votes: 3 })
         .expect(200)
         .then(res => {
-          console.log(res.body);
           expect(res.body.comment.votes).to.equal(19);
           expect(res.body.comment).to.contain.keys(
             "comment_id",
@@ -248,7 +247,7 @@ describe("/api", () => {
     });
   });
   describe("DELETE /api/comments/:comment_id", () => {
-    it.only("STATUS 204: comment deleted", () => {
+    it("STATUS 204: comment deleted", () => {
       return request(app)
         .delete("/api/comments/1")
         .expect(204)

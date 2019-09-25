@@ -259,7 +259,7 @@ describe("/", () => {
         });
       });
     });
-    describe.only("GET /api/articles?sort_by=cats", () => {
+    describe("GET /api/articles?sort_by=cats", () => {
       it("STATUS 400 bad request (sort_by a column that doesn't exist)", () => {
         return request(app)
           .get("/api/articles?sort_by=yes")
@@ -276,14 +276,6 @@ describe("/", () => {
             expect(res.body.msg).to.equal("bad request");
           });
       });
-      // it("STATUS 404 route not found (author not in database)", () => {
-      //   return request(app)
-      //     .get("/api/articles?author=Shakespeare")
-      //     .expect(404)
-      //     .then(res => {
-      //       expect(res.body.msg).to.equal("route not found");
-      //     });
-      // });
     });
   });
 });
