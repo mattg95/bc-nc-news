@@ -122,7 +122,7 @@ describe("/api", () => {
         });
     });
   });
-  describe.only("GET api/articles:articleId/comments", () => {
+  describe("GET api/articles:articleId/comments", () => {
     it("STATUS: 200 responds with an object containing an array of comments", () => {
       return request(app)
         .get("/api/articles/1/comments")
@@ -226,15 +226,16 @@ describe("/api", () => {
         });
     });
   });
-  describe("PATCH /api/comments/:comment_id", () => {
+  describe.only("PATCH /api/comments/:comment_id", () => {
     it("PATCH /api/comments/:comment_id", () => {
       return request(app)
         .patch("/api/comments/1")
         .send({ inc_votes: 3 })
         .expect(200)
         .then(res => {
-          expect(res.body.comments.votes).to.equal(3);
-          expect(res.body.comments).to.contain.keys(
+          console.log(res.body);
+          expect(res.body.comment.votes).to.equal(19);
+          expect(res.body.comment).to.contain.keys(
             "comment_id",
             "author",
             "article_id",
@@ -243,6 +244,15 @@ describe("/api", () => {
             "body"
           );
           expect(res.body.comment.comment_id).to.equal(1);
+        });
+    });
+    it("DELETE /api/comments/:comment_id", () => {
+      return request(app)
+        .delete("/api/comments/1")
+        .expect(204)
+        .then(res => {
+          console.log(res.body);
+          expect(res.body.msg).to.equal("deleted");
         });
     });
   });

@@ -1,4 +1,9 @@
-const { writeComment, fetchComments } = require("../models/commentsModels");
+const {
+  writeComment,
+  fetchComments,
+  changeComment,
+  destroyComment
+} = require("../models/commentsModels");
 
 exports.postComment = (req, res, next) => {
   if (
@@ -34,4 +39,18 @@ exports.getComments = (req, res, next) => {
         res.status(200).send({ comments });
       })
       .catch(next);
+};
+
+exports.patchComment = (req, res, next) => {
+  if (!Number.isInteger(+req.params.comment_id)) {
+    return next({ status: 400, msg: "bad request" });
+  } else {
+    changeComment(req.params.comment_id, req.body.inc_votes)
+      .then(comment => res.status(200).send({ comment }))
+      .catch(next);
+  }
+};
+
+exports.deleteComment = (req, res, next) => {
+  destroyComment(req.params.comment_id).catch(next);
 };
