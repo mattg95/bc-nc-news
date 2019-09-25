@@ -1,13 +1,12 @@
 const connection = require("../connections.js");
 
-function returnUser(req) {
+function returnUser(params) {
   return connection
     .select("*")
     .from("users")
-    .where({ username: req.username })
+    .where({ username: params.username })
     .then(users => {
       if (!users.length) {
-        console.log(users);
         return Promise.reject({ status: 404, msg: "route not found" });
       }
       return users;

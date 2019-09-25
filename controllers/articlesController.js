@@ -1,5 +1,5 @@
 const {
-  returnArticles,
+  getArticles,
   changeArticles,
   fetchAllArticles
 } = require("../models/articlesModels");
@@ -8,7 +8,7 @@ exports.sendArticles = (req, res, next) => {
   if (!Number.isInteger(+req.params.article_id)) {
     return next({ status: 400, msg: "bad request" });
   } else {
-    returnArticles(req.params.article_id)
+    getArticles(req.params.article_id)
       .then(article => res.status(200).send({ article }))
       .catch(next);
   }

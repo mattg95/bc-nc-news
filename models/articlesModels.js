@@ -1,20 +1,12 @@
 const connection = require("../connections.js");
 
-exports.returnArticles = id => {
+exports.getArticles = article_id => {
   return connection("articles")
-    .select(
-      "articles.author",
-      "articles.title",
-      "articles.article_id",
-      "articles.topic",
-      "articles.body",
-      "articles.created_at",
-      "articles.votes"
-    )
-    .count({ comment_count: "comments.article_id" })
+    .select("articles.*")
+    .count({ comment_count: "comments.comment_id" })
     .leftJoin("comments", "comments.article_id", "articles.article_id")
     .groupBy("articles.article_id")
-    .where("articles.article_id", id)
+    .where("articles.article_id", article_id)
     .returning("*")
     .then(articleRes => {
       const [article] = articleRes;
@@ -27,7 +19,7 @@ exports.returnArticles = id => {
     });
 };
 
-exports.changeArticles = (id, inc_votes) => {
+exports.changeArticles = (article_id, inc_votes) => {
   return connection("articles")
     .select(
       "articles.author",
@@ -41,7 +33,7 @@ exports.changeArticles = (id, inc_votes) => {
     .count({ comment_count: "comments.article_id" })
     .leftJoin("comments", "comments.article_id", "articles.article_id")
     .groupBy("articles.article_id")
-    .where("articles.article_id", id)
+    .where("articles.article_id", article_id)
     .increment({ votes: inc_votes })
     .returning("*")
     .then(articleRes => {
