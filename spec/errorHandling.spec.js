@@ -61,7 +61,25 @@ describe("/", () => {
       });
     });
     describe("/articles", () => {
-      describe(":article_id", () => {
+      describe("GET /api/articles?sort_by=cats", () => {
+        it("STATUS 400 bad request (sort_by a column that doesn't exist)", () => {
+          return request(app)
+            .get("/api/articles?sort_by=yes")
+            .expect(400)
+            .then(res => {
+              expect(res.body.msg).to.equal("bad request");
+            });
+        });
+        it("STATUS 400 bad request (order !== asc or desc)", () => {
+          return request(app)
+            .get("/api/articles?order=random")
+            .expect(400)
+            .then(res => {
+              expect(res.body.msg).to.equal("bad request");
+            });
+        });
+      });
+      describe("/:article_id", () => {
         describe("GET  /api/comment/comment_id_not_found", () => {
           it("STATUS 404 route not found", () => {
             return request(app)
@@ -259,26 +277,6 @@ describe("/", () => {
         });
       });
     });
-    describe("GET /api/articles?sort_by=cats", () => {
-      it("STATUS 400 bad request (sort_by a column that doesn't exist)", () => {
-        return request(app)
-          .get("/api/articles?sort_by=yes")
-          .expect(400)
-          .then(res => {
-            expect(res.body.msg).to.equal("bad request");
-          });
-      });
-      it("STATUS 400 bad request (order !== asc or desc)", () => {
-        return request(app)
-          .get("/api/articles?order=random")
-          .expect(400)
-          .then(res => {
-            expect(res.body.msg).to.equal("bad request");
-          });
-      });
-    });
-
-    ///////////////////////////
     describe("PATCH  /api/comment/:comment_id (comment_id notfound)", () => {
       it("STATUS 404 route not found", () => {
         return request(app)
@@ -342,6 +340,27 @@ describe("/", () => {
           .expect(400)
           .then(res => {
             expect(res.body.msg).to.equal("bad request");
+          });
+      });
+    });
+
+    describe("DELETE /api/comments:comment_id (invalid comment_id format)", () => {
+      it("STATUS: 400 bad request", () => {
+        return request(app)
+          .delete("/api/comments/four")
+          .expect(400)
+          .then(res => {
+            expect(res.body.msg).to.equal("bad request");
+          });
+      });
+    });
+    describe("DELETE /api/comments:comment_id (no comment at comment_id)", () => {
+      it("STATUS: 404 route not found", () => {
+        return request(app)
+          .delete("/api/comments/30000")
+          .expect(404)
+          .then(res => {
+            expect(res.body.msg).to.equal("route not found");
           });
       });
     });

@@ -40,11 +40,25 @@ exports.changeComment = (comment_id, inc_votes) => {
     .where("comment_id", comment_id)
     .increment({ votes: inc_votes })
     .returning("*")
-    .then(comment => comment[0]);
+    .then(commentRes => {
+      const [comment] = commentRes;
+      if (!comment) {
+        return Promise.reject({ status: 404, msg: "route not found" });
+      } else {
+        comment.votes = +comment.votes;
+        return comment;
+      }
+    });
 };
 
 exports.destroyComment = comment_id => {
   return connection("comments")
     .where("comment_id", comment_id)
-    .delete("*");
+    .delete("*")
+    .then(commentRes => {
+      const [comment] = commentRes;
+      if (!comment) {
+        return Promise.reject({ status: 404, msg: "route not found" });
+      } else return comment;
+    });
 };
