@@ -26,7 +26,7 @@ exports.postComment = (req, res, next) => {
   }
 };
 
-exports.getComments = (req, res, next) => {
+exports.getComment = (req, res, next) => {
   const { sort_by, order } = req.query;
   const { article_id } = req.params;
   if (!Number.isInteger(+req.params.article_id)) {
