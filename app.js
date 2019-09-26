@@ -16,6 +16,7 @@ app.use((err, req, res, next) => {
 
 //psql error codes
 app.use((err, req, res, next) => {
+  //console.log(err.code);
   if (err.code === "23503") {
     res.status(404).send({ msg: "route not found" });
   }

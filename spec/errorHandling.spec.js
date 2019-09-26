@@ -247,10 +247,9 @@ describe("/", () => {
                 expect(res.body.msg).to.equal("route not found");
               });
           });
-          describe("/api/articles/1/comments?query", () => {
-            
-          })
+          describe("/api/articles/1/comments?query", () => {});
         });
+        //describe("/api/articles/:") /api/articles/1/comments?order=asc
       });
     });
   });

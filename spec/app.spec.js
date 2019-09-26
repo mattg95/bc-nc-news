@@ -254,40 +254,39 @@ describe("/api", () => {
       });
     });
   });
-});
-
-describe("/api/comments/", () => {
-  //////////////////////////////////////////////
-  describe("/api/comments/:comment_id", () => {
-    ///////////////////////////////////////////
-    describe("PATCH", () => {
-      it("STATUS 200: responds with a changed comment", () => {
-        return request(app)
-          .patch("/api/comments/1")
-          .send({ inc_votes: 3 })
-          .expect(200)
-          .then(res => {
-            expect(res.body.comment.votes).to.equal(19);
-            expect(res.body.comment).to.contain.keys(
-              "comment_id",
-              "author",
-              "article_id",
-              "votes",
-              "created_at",
-              "body"
-            );
-            expect(res.body.comment.comment_id).to.equal(1);
-          });
+  describe("/api/comments/", () => {
+    //////////////////////////////////////////////
+    describe.only("/api/comments/:comment_id", () => {
+      ///////////////////////////////////////////
+      describe("PATCH", () => {
+        it("STATUS 200: responds with a changed comment", () => {
+          return request(app)
+            .patch("/api/comments/1")
+            .send({ inc_votes: 3 })
+            .expect(200)
+            .then(res => {
+              expect(res.body.comment.votes).to.equal(19);
+              expect(res.body.comment).to.contain.keys(
+                "comment_id",
+                "author",
+                "article_id",
+                "votes",
+                "created_at",
+                "body"
+              );
+              expect(res.body.comment.comment_id).to.equal(1);
+            });
+        });
       });
-    });
-    describe("DELETE /api/comments/:comment_id", () => {
-      it("STATUS 204: comment deleted", () => {
-        return request(app)
-          .delete("/api/comments/1")
-          .expect(204)
-          .then(res => {
-            expect(res.body).to.deep.equal({});
-          });
+      describe("DELETE", () => {
+        it("STATUS 204: comment deleted", () => {
+          return request(app)
+            .delete("/api/comments/1")
+            .expect(204)
+            .then(res => {
+              expect(res.body).to.deep.equal({});
+            });
+        });
       });
     });
   });

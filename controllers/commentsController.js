@@ -62,8 +62,7 @@ exports.deleteComment = (req, res, next) => {
     return next({ status: 400, msg: "bad request" });
   }
   return destroyComment(req.params.comment_id)
-    .then(commentRes => {
-      const [comment] = commentRes;
+    .then(comment => {
       res.status(204).send({ comment });
     })
     .catch(next);
