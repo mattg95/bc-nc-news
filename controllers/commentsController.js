@@ -27,13 +27,15 @@ exports.postComment = (req, res, next) => {
 };
 
 exports.getComments = (req, res, next) => {
+  const { sort_by, order } = req.query;
+  const { article_id } = req.params;
   if (!Number.isInteger(+req.params.article_id)) {
     return next({
       status: 400,
       msg: "bad request"
     });
   } else
-    fetchComments(req.params.article_id, req.query.sort_by, req.query.order_by)
+    fetchComments(article_id, sort_by, order)
       .then(commentRes => {
         const [comments] = commentRes;
         res.status(200).send({ comments });

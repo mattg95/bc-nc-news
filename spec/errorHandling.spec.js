@@ -46,18 +46,37 @@ describe("/", () => {
         });
       });
     });
-    /////////////////////////////////
     describe("/api/topics", () => {
-      describe("GET", () => {
-        it(" STATUS:400 bad request", () => {
-          return request(app)
-            .get("/api/topics/notatopic")
-            .expect(404)
-            .then(res => expect(res.body.msg).to.equal("route not found"));
+      /////////////////////////////////
+      describe("INVALID METHODS", () => {
+        it("status:405", () => {
+          const invalidMethods = ["patch", "put", "delete"];
+          const methodPromises = invalidMethods.map(method => {
+            return request(app)
+              [method]("/api/topics")
+              .expect(405)
+              .then(res => {
+                expect(res.body.msg).to.equal("method not allowed");
+              });
+          });
+          return Promise.all(methodPromises);
         });
       });
+      //This is testing for a route point that we have not been asked to make-------->
+
+      //   describe("/api/topics/:topic", () => {
+      // ////////////////////////////////
+      //     describe("GET", () => {
+      //       it(" STATUS:400 bad request", () => {
+      //         return request(app)
+      //           .get("/api/topics/notatopic")
+      //           .expect(404)
+      //           .then(res => expect(res.body.msg).to.equal("route not found"));
+      //       });
+      //     });
+      //   });
     });
-    //////////////////////////////////
+
     describe("/api/users", () => {
       describe("/api/users/:username", () => {
         describe("GET", () => {
@@ -91,8 +110,17 @@ describe("/", () => {
                 expect(res.body.msg).to.equal("bad request");
               });
           });
+          it("STATUS 404 bad request (topic = notatopic)", () => {
+            return request(app)
+              .get("/api/articles?topic=notatopic")
+              .expect(404)
+              .then(res => {
+                expect(res.body.msg).to.equal("route not found");
+              });
+          });
         });
       });
+
       describe("/api/articles/:article_id", () => {
         describe("GET", () => {
           it("STATUS:400 bad request (wrong_format_id)", () => {
@@ -152,6 +180,7 @@ describe("/", () => {
             });
         });
       });
+
       describe("api/articles/:article_id/comments", () => {
         ///////////////////////////////////////
         describe("POST ", () => {

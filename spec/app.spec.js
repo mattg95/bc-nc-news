@@ -239,12 +239,22 @@ describe("/api", () => {
                   });
                 });
             });
-            it("STATUS: 200 array accepts an order_by query and orders the array correspondingly", () => {
+            it("STATUS: 200 array accepts an order query and orders the array correspondingly", () => {
               return request(app)
-                .get("/api/articles/1/comments?sorted_by=votes&order_by=asc")
+                .get("/api/articles/1/comments?order=asc")
                 .expect(200)
                 .then(res => {
                   expect(res.body.comments).to.be.sortedBy("created_at", {
+                    ascending: true
+                  });
+                });
+            });
+            it("STATUS: 200 array can take both an sort_by and order query at the same time", () => {
+              return request(app)
+                .get("/api/articles/1/comments?sort_by=votes&order=asc")
+                .expect(200)
+                .then(res => {
+                  expect(res.body.comments).to.be.sortedBy("votes", {
                     ascending: true
                   });
                 });
@@ -256,7 +266,7 @@ describe("/api", () => {
   });
   describe("/api/comments/", () => {
     //////////////////////////////////////////////
-    describe.only("/api/comments/:comment_id", () => {
+    describe("/api/comments/:comment_id", () => {
       ///////////////////////////////////////////
       describe("PATCH", () => {
         it("STATUS 200: responds with a changed comment", () => {
