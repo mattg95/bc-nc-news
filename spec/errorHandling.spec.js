@@ -110,17 +110,8 @@ describe("/", () => {
                 expect(res.body.msg).to.equal("bad request");
               });
           });
-          it("STATUS 404 bad request (topic = notatopic)", () => {
-            return request(app)
-              .get("/api/articles?topic=notatopic")
-              .expect(404)
-              .then(res => {
-                expect(res.body.msg).to.equal("route not found");
-              });
-          });
         });
       });
-
       describe("/api/articles/:article_id", () => {
         describe("GET", () => {
           it("STATUS:400 bad request (wrong_format_id)", () => {

@@ -1,24 +1,5 @@
 const connection = require("../connections.js");
 
-exports.getArticles = article_id => {
-  return connection("articles")
-    .select("articles.*")
-    .count({ comment_count: "comments.comment_id" })
-    .leftJoin("comments", "comments.article_id", "articles.article_id")
-    .groupBy("articles.article_id")
-    .where("articles.article_id", article_id)
-    .returning("*")
-    .then(articleRes => {
-      const [article] = articleRes;
-      if (!article) {
-        return Promise.reject({ status: 404, msg: "route not found" });
-      } else {
-        article.comment_count = +article.comment_count;
-        return article;
-      }
-    });
-};
-
 exports.changeArticles = (article_id, inc_votes) => {
   return connection("articles")
     .select("articles.*")
@@ -39,7 +20,7 @@ exports.changeArticles = (article_id, inc_votes) => {
     });
 };
 
-exports.fetchAllArticles = (sort_by, order, author, topic) => {
+exports.fetchArticlesByQuery = (sort_by, order, author, topic) => {
   return connection("articles")
     .select(
       "articles.author",
@@ -59,9 +40,59 @@ exports.fetchAllArticles = (sort_by, order, author, topic) => {
     })
     .returning("*")
     .then(articles => {
-      articles.map(article => {
-        article.comment_count = +article.comment_count;
-      });
+      if (!articles.length && author) {
+        return Promise.all([articles, checkAuthorExists(author)]).then(
+          ([articles]) => {
+            return articles;
+          }
+        );
+      }
+      if (!articles.length && topic) {
+        return Promise.all([articles, checkTopicExists(topic)]).then(
+          ([articles]) => {
+            return articles;
+          }
+        );
+      } else
+        articles.map(article => {
+          article.comment_count = +article.comment_count;
+          return articles;
+        });
       return articles;
+    });
+};
+
+exports.fetchArticlesById = (sort_by, order, article_id) => {
+  return connection("articles")
+    .select("articles.*")
+    .where("articles.article_id", article_id)
+    .count({ comment_count: "comments.comment_id" })
+    .leftJoin("comments", "comments.article_id", "articles.article_id")
+    .groupBy("articles.article_id")
+    .orderBy(sort_by || "created_at", order || "desc")
+    .returning("*")
+    .then(([article]) => {
+      article.comment_count = +article.comment_count;
+      return article;
+    });
+};
+
+const checkTopicExists = topic => {
+  return connection("topics")
+    .first("topics.*")
+    .where("topic.slug", topic)
+    .then(topic => {
+      if (!topic)
+        return Promise.reject({ status: 404, msg: "route not found" });
+    });
+};
+
+const checkAuthorExists = author => {
+  return connection("users")
+    .first("users.*")
+    .where("users.username", author)
+    .then(authorRes => {
+      if (!authorRes)
+        return Promise.reject({ status: 404, msg: "route not found" });
     });
 };
