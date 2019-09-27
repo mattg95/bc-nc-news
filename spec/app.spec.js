@@ -11,6 +11,8 @@ const request = require("supertest");
 const chaiSorted = require("chai-sorted");
 chai.use(chaiSorted);
 
+const endpoints = require("../endpoints.json");
+
 describe("/api", () => {
   //////////////////////////////////////
   it("STATUS:200 responds with an object containing an array of topic objects", () => {
@@ -18,7 +20,7 @@ describe("/api", () => {
       .get("/api")
       .expect(200)
       .then(res => {
-        expect(res.body.msg).to.equal("Welcome to NewsApp!");
+        expect(res.body).to.deep.equal(endpoints);
       });
   });
   beforeEach(() => connection.seed.run());

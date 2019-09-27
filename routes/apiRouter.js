@@ -5,11 +5,14 @@ const userRouter = require("./userRouter.js");
 const articlesRouter = require("./articlesRouter.js");
 const commentRouter = require("./commentsRouter");
 
-const { send405Error } = require("../errorHandlers");
+const endpoints = require("../endpoints.json");
 
 //--------------------
 
 //---
+apiRouter.route("/").get((req, res, next) => {
+  res.send(endpoints);
+});
 
 apiRouter.use("/topics", topicsRouter);
 

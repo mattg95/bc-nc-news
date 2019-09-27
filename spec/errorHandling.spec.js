@@ -97,6 +97,22 @@ describe("/", () => {
               });
           });
         });
+        it("STATUS 404 bad request (?topic=notatopic)", () => {
+          return request(app)
+            .get("/api/articles?topic=notatopic")
+            .expect(404)
+            .then(res => {
+              expect(res.body.msg).to.equal("route not found");
+            });
+        });
+        it("STATUS 404 bad request (?author=notanauthor)", () => {
+          return request(app)
+            .get("/api/articles?author=notanauthor")
+            .expect(404)
+            .then(res => {
+              expect(res.body.msg).to.equal("route not found");
+            });
+        });
       });
       describe("/api/articles/:article_id", () => {
         ////////////////////////////////////////////////////////

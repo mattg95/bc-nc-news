@@ -21,7 +21,7 @@ exports.fetchComments = (article_id, sort_by, order) => {
     .then(comments => {
       if (!comments.length) {
         return Promise.all([comments, checkArticleExists(article_id)]).then(
-          comments => {
+          ([comments]) => {
             return comments;
           }
         );
@@ -32,8 +32,6 @@ exports.fetchComments = (article_id, sort_by, order) => {
 
 exports.changeComment = (comment_id, inc_votes) => {
   return connection("comments")
-    .select("*")
-    .from("comments")
     .where("comment_id", comment_id)
     .increment({ votes: inc_votes })
     .returning("*")

@@ -10,20 +10,20 @@ exports.checkArticleExists = article_id => {
     });
 };
 
-const checkTopicExists = topic => {
+exports.checkTopicExists = topic => {
   return connection("topics")
     .first("topics.*")
-    .where("topic.slug", topic)
+    .where("slug", topic)
     .then(topic => {
       if (!topic)
         return Promise.reject({ status: 404, msg: "route not found" });
     });
 };
 
-const checkAuthorExists = author => {
+exports.checkAuthorExists = author => {
   return connection("users")
     .first("users.*")
-    .where("users.username", author)
+    .where("username", author)
     .then(authorRes => {
       if (!authorRes)
         return Promise.reject({ status: 404, msg: "route not found" });

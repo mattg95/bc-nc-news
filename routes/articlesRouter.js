@@ -24,6 +24,7 @@ articlesRouter
 articlesRouter
   .route("/:article_id")
   .get(getArticlesById)
-  .patch(patchArticle);
+  .patch(patchArticle)
+  .all(send405Error);
 
 module.exports = articlesRouter;
