@@ -120,6 +120,14 @@ describe("/api", () => {
               expect(res.body.articles.length).to.equal(1);
             });
         });
+        it("STATUS: 200 returns an empty array when there are no articles on the queried topic", () => {
+          return request(app)
+            .get("/api/articles?topic=paper")
+            .expect(200)
+            .then(res => {
+              expect(res.body.articles.length).to.equal(0);
+            });
+        });
       });
     });
     describe("api/articles/:article_id", () => {
@@ -145,7 +153,6 @@ describe("/api", () => {
                 title: "Living in the shadow of a great man",
                 author: "butter_bridge"
               });
-              //expect(res.body.article.article_id).to.equal(1);
             });
         });
       });

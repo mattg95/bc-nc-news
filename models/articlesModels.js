@@ -47,14 +47,14 @@ exports.fetchArticlesByQuery = (sort_by, order, author, topic) => {
     .then(articles => {
       if (!articles.length && author) {
         return Promise.all([articles, checkAuthorExists(author)]).then(
-          articles => {
+          ([articles]) => {
             return articles;
           }
         );
       }
       if (!articles.length && topic) {
         return Promise.all([articles, checkTopicExists(topic)]).then(
-          articles => {
+          ([articles]) => {
             return articles;
           }
         );
