@@ -12,7 +12,7 @@ exports.changeArticles = (article_id, inc_votes) => {
     .leftJoin("comments", "comments.article_id", "articles.article_id")
     .groupBy("articles.article_id")
     .where("articles.article_id", article_id)
-    .increment({ votes: inc_votes })
+    .increment({ votes: inc_votes || 0 })
     .returning("*")
     .then(articleRes => {
       const [article] = articleRes;
