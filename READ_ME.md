@@ -1,28 +1,36 @@
 # NewsApp
 
+https://nc-news-matt-g.herokuapp.com/
+
 A web application which allows the hosting of articles, topics, comments and users.
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-###Prerequisistes
+### Prerequisites
 
 The app requires the use of node.js, postgresSQL, express.js and knex.js
 
-#### Installtion
+#### Installation
 
-To install the following dependencies, run the following command;
-
-```
-npm install express knex pg
-```
-
-To install the following development dependencies, run the following command;
+To install the neccesary dependencies, run the following command;
 
 ```
-npm install chai chai-sorted mocha supertest nodemon -D
+npm install
 ```
+
+The following dependencies will be installed:
+express,
+knex and
+postgres.
+
+The following developer dependencies will also be installed:
+chai,
+chai-sorted,
+mocha,
+supertest and
+nodemon.
 
 ## Testing
 
@@ -109,7 +117,7 @@ All version control is handled by GitHub. Please view [our GitHub](https://githu
 
 ## Authors
 
-- [**Matt Goodman**](https://github.com/mattg95) - _Lead Developer_
+- [**Matt Goodman**](https://github.com/mattg95)
 
 ## License
 
