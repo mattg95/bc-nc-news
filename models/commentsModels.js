@@ -33,7 +33,7 @@ exports.fetchComments = (article_id, sort_by, order) => {
 exports.changeComment = (comment_id, inc_votes) => {
   return connection("comments")
     .where("comment_id", comment_id)
-    .increment({ votes: inc_votes })
+    .increment({ votes: inc_votes || 0 })
     .returning("*")
     .then(commentRes => {
       const [comment] = commentRes;
