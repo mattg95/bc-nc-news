@@ -109,7 +109,7 @@ describe("/", () => {
                 expect(res.body.msg).to.equal("bad request");
               });
           });
-          it.only("STATUS 404 route not found (invalid_id)", () => {
+          it("STATUS 404 route not found (invalid_id)", () => {
             return request(app)
               .get("/api/articles/666")
               .expect(404)
