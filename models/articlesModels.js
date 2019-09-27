@@ -72,6 +72,9 @@ exports.fetchArticlesById = (sort_by, order, article_id) => {
     .orderBy(sort_by || "created_at", order || "desc")
     .returning("*")
     .then(([article]) => {
+      if (!article) {
+        return Promise.reject({ status: 404, msg: "route not found" });
+      }
       article.comment_count = +article.comment_count;
       return article;
     });

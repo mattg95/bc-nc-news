@@ -19,12 +19,12 @@ exports.fetchComments = (article_id, sort_by, order) => {
     .then(comments => {
       if (!comments.length) {
         return Promise.all([comments, checkArticleExists(article_id)]).then(
-          ([comments]) => {
+          comments => {
             return comments;
           }
         );
       }
-      return Promise.reject({ status: 404, msg: "route not found" });
+      return comments;
     });
 };
 

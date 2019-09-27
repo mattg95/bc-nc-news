@@ -62,21 +62,7 @@ describe("/", () => {
           return Promise.all(methodPromises);
         });
       });
-      //This is testing for a route point that we have not been asked to make-------->
-
-      //   describe("/api/topics/:topic", () => {
-      // ////////////////////////////////
-      //     describe("GET", () => {
-      //       it(" STATUS:400 bad request", () => {
-      //         return request(app)
-      //           .get("/api/topics/notatopic")
-      //           .expect(404)
-      //           .then(res => expect(res.body.msg).to.equal("route not found"));
-      //       });
-      //     });
-      //   });
     });
-
     describe("/api/users", () => {
       describe("/api/users/:username", () => {
         describe("GET", () => {
@@ -113,6 +99,7 @@ describe("/", () => {
         });
       });
       describe("/api/articles/:article_id", () => {
+        ////////////////////////////////////////////////////////
         describe("GET", () => {
           it("STATUS:400 bad request (wrong_format_id)", () => {
             return request(app)
@@ -120,6 +107,14 @@ describe("/", () => {
               .expect(400)
               .then(res => {
                 expect(res.body.msg).to.equal("bad request");
+              });
+          });
+          it.only("STATUS 404 route not found (invalid_id)", () => {
+            return request(app)
+              .get("/api/articles/666")
+              .expect(404)
+              .then(res => {
+                expect(res.body.msg).to.equal("route not found");
               });
           });
         });
@@ -277,16 +272,6 @@ describe("/", () => {
     ////////////////////////////////////////////
     describe("/api/comments/:comment_id", () => {
       //////////////////////////////////////////////
-      describe("GET", () => {
-        it("STATUS 404 route not found (invalid_id)", () => {
-          return request(app)
-            .get("/api/articles/666")
-            .expect(404)
-            .then(res => {
-              expect(res.body.msg).to.equal("route not found");
-            });
-        });
-      });
       describe("PATCH ", () => {
         it("STATUS 404 route not found (invalid_comment_id", () => {
           return request(app)

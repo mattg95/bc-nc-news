@@ -10,7 +10,7 @@ const { send405Error } = require("../errorHandlers");
 
 const {
   postComment,
-  getComments
+  getComment
 } = require("../controllers/commentsController");
 
 articlesRouter.route("/").get(sendArticles);
@@ -18,7 +18,7 @@ articlesRouter.route("/").get(sendArticles);
 articlesRouter
   .route("/:article_id/comments")
   .post(postComment)
-  .get(getComments)
+  .get(getComment)
   .all(send405Error);
 
 articlesRouter

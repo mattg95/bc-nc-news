@@ -38,6 +38,9 @@ exports.sendArticles = (req, res, next) => {
 exports.getArticlesById = (req, res, next) => {
   const { sort_by, order } = req.query;
   const { article_id } = req.params;
+  if (!Number.isInteger(+req.params.article_id)) {
+    return next({ status: 400, msg: "bad request" });
+  }
   fetchArticlesById(sort_by, order, article_id)
     .then(article => {
       res.status(200).send({ article });
