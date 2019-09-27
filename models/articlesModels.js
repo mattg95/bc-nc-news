@@ -1,5 +1,10 @@
 const connection = require("../connections.js");
 
+const {
+  checkTopicExists,
+  checkAuthorExists
+} = require("./checkThingsExistFuncs");
+
 exports.changeArticles = (article_id, inc_votes) => {
   return connection("articles")
     .select("articles.*")
@@ -77,25 +82,5 @@ exports.fetchArticlesById = (sort_by, order, article_id) => {
       }
       article.comment_count = +article.comment_count;
       return article;
-    });
-};
-
-const checkTopicExists = topic => {
-  return connection("topics")
-    .first("topics.*")
-    .where("topic.slug", topic)
-    .then(topic => {
-      if (!topic)
-        return Promise.reject({ status: 404, msg: "route not found" });
-    });
-};
-
-const checkAuthorExists = author => {
-  return connection("users")
-    .first("users.*")
-    .where("users.username", author)
-    .then(authorRes => {
-      if (!authorRes)
-        return Promise.reject({ status: 404, msg: "route not found" });
     });
 };

@@ -128,42 +128,42 @@ describe("/", () => {
                 expect(res.body.msg).to.equal("bad request");
               });
           });
-        });
-        it("STATUS: 400 bad request(no data sent in patch request)", () => {
-          return request(app)
-            .patch("/api/articles/1")
-            .send()
-            .expect(400)
-            .then(res => {
-              expect(res.body.msg).to.equal("bad request");
-            });
-        });
-        it("STATUS: 400 bad request (no inc_votes key patch request)", () => {
-          return request(app)
-            .patch("/api/articles/1")
-            .send({ randomKey: 2 })
-            .expect(400)
-            .then(res => {
-              expect(res.body.msg).to.equal("bad request");
-            });
-        });
-        it("STATUS: 400 bad request (invalid inc_votes value)", () => {
-          return request(app)
-            .patch("/api/articles/1")
-            .send({ inc_votes: "yes" })
-            .expect(400)
-            .then(res => {
-              expect(res.body.msg).to.equal("bad request");
-            });
-        });
-        it("STATUS: 400 bad request (extra property on request body)", () => {
-          return request(app)
-            .patch("/api/articles/1")
-            .send({ inc_votes: 2, mitch: "present" })
-            .expect(400)
-            .then(res => {
-              expect(res.body.msg).to.equal("bad request");
-            });
+          it("STATUS: 400 bad request(no data sent in patch request)", () => {
+            return request(app)
+              .patch("/api/articles/1")
+              .send()
+              .expect(400)
+              .then(res => {
+                expect(res.body.msg).to.equal("bad request");
+              });
+          });
+          it("STATUS: 400 bad request (no inc_votes key patch request)", () => {
+            return request(app)
+              .patch("/api/articles/1")
+              .send({ randomKey: 2 })
+              .expect(400)
+              .then(res => {
+                expect(res.body.msg).to.equal("bad request");
+              });
+          });
+          it("STATUS: 400 bad request (invalid inc_votes value)", () => {
+            return request(app)
+              .patch("/api/articles/1")
+              .send({ inc_votes: "yes" })
+              .expect(400)
+              .then(res => {
+                expect(res.body.msg).to.equal("bad request");
+              });
+          });
+          it("STATUS: 400 bad request (extra property on request body)", () => {
+            return request(app)
+              .patch("/api/articles/1")
+              .send({ inc_votes: 2, mitch: "present" })
+              .expect(400)
+              .then(res => {
+                expect(res.body.msg).to.equal("bad request");
+              });
+          });
         });
       });
 
@@ -349,6 +349,3 @@ describe("/", () => {
     });
   });
 });
-
-
-

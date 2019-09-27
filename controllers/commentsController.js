@@ -5,13 +5,6 @@ const {
   destroyComment
 } = require("../models/commentsModels");
 
-const checkForArticles = id => {
-  return connection
-    .first("*")
-    .from("articles")
-    .where("articles.article_id", id);
-};
-
 exports.postComment = (req, res, next) => {
   if (
     !req.body.hasOwnProperty("username") ||

@@ -1,5 +1,7 @@
 const connection = require("../connections.js");
 
+const { checkArticleExists } = require("./checkThingsExistFuncs");
+
 exports.writeComment = (username, article_id, body) => {
   return connection("comments")
     .insert({
@@ -25,16 +27,6 @@ exports.fetchComments = (article_id, sort_by, order) => {
         );
       }
       return comments;
-    });
-};
-
-const checkArticleExists = article_id => {
-  return connection("articles")
-    .first("articles.*")
-    .where("article_id", article_id)
-    .then(article => {
-      if (!article)
-        return Promise.reject({ status: 404, msg: "route not found" });
     });
 };
 

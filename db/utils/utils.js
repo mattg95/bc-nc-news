@@ -26,17 +26,3 @@ exports.formatComments = (comments, articleRef) => {
     return comment;
   });
 };
-
-// exports.formatComments = (comments, articleRef) => {
-//    return comments.map((comment) => {
-//    const {created_by, belongs_to, created_at, article_id} = comment;
-//    comment.author = created_by;
-//    comment.title = belongs_to;
-//     comment.article_id = (articleRef[belongs_to])
-//     comment.created_at = new Date(created_at);
-//    delete comment.belongs_to;
-//    delete comment.created_by;
-//    delete comment.title;
-//     return comment;
-//   });
-// };
