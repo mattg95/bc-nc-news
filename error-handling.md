@@ -69,18 +69,13 @@ Bear in mind, handling bad inputs from clients doesn't necessarily have to lead 
 
 ### POST `/api/articles/:article_id/comments`
 
--Bad `article_id` (e.g. `/dog`)
-
+- Bad `article_id` (e.g. `/dog`)
 - Well formed `article_id` that doesn't exist in the database (e.g. `/999999`)
-- no comment_id
 
 ### GET `/api/articles/:article_id/comments`
 
 - Bad `article_id` (e.g. `/dog`)
 - Well formed `article_id` that doesn't exist in the database (e.g. `/999999`)
-  Bad queries:
-  - `sort_by` a column that doesn't exist
-  - `order` !== "asc" / "desc"
 
 ### GET `/api/articles`
 
@@ -92,11 +87,17 @@ Bear in mind, handling bad inputs from clients doesn't necessarily have to lead 
 
 ### PATCH `/api/comments/:comment_id`
 
--
+- Bad `comment_id` (e.g. `/dog`)
+- Well formed `comment_id` that doesn't exist in the database (e.g. `/999999`)
+- No request entered at all
+- No `inc_votes` on request body
+- Invalid `inc_votes` (e.g. `{ inc_votes : "cat" }`)
+- Some other property on request body (e.g. `{ inc_votes : 1, name: 'Mitch' }`)
 
 ### DELETE `/api/comments/:comment_id`
 
--
+- Bad `comment_id` (e.g. `/dog`)
+- Well formed `comment_id` that doesn't exist in the database (e.g. `/999999`)
 
 ### GET `/api`
 
