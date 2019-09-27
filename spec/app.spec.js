@@ -13,9 +13,17 @@ chai.use(chaiSorted);
 
 describe("/api", () => {
   //////////////////////////////////////
+  it("STATUS:200 responds with an object containing an array of topic objects", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then(res => {
+        expect(res.body.msg).to.equal("Welcome to NewsApp!");
+      });
+  });
   beforeEach(() => connection.seed.run());
   after(() => connection.destroy());
-  describe("api/topics", () => {
+  describe("/api/topics", () => {
     ////////////////////////////
     describe("GET", () => {
       it("STATUS:200 responds with an object containing an array of topic objects", () => {

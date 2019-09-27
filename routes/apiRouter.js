@@ -20,6 +20,12 @@ apiRouter.use("/articles", articlesRouter);
 apiRouter.use("/comments", commentRouter);
 
 apiRouter
+  .route("")
+  .get((req, res, next) =>
+    res.status(200).send({ msg: "Welcome to NewsApp!" })
+  );
+
+apiRouter
   .route("/*")
   .get((req, res, next) => res.status(404).send({ msg: "route not found" }));
 
