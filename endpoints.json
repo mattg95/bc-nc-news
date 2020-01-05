@@ -9,6 +9,135 @@
       "topics": [{ "slug": "football", "description": "Footie!" }]
     }
   },
+  "GET /api/users:username": {
+    "description": "serves an object of data about a specific user",
+    "queries": [],
+    "exampleResponse": {
+      "username": "jessjelly",
+      "avatar_url": "https://s-media-cache-ak0.pinimg.com/564x/39/62/ec/3962eca164e60cf46f979c1f57d4078b.jpg",
+      "name": "Jess Jelly"
+    }
+  },
+  "GET /api/articles/:article_id": {
+    "description": "serves an object of information about a specific article",
+    "queries": [],
+    "exampleResponse": {
+      "article": {
+        "article_id": 2,
+        "title": "The Rise Of Thinking Machines: How IBM's Watson Takes On The World",
+        "body": "Many people know Watson as the IBM-developed cognitive super computer that won the Jeopardy! gameshow in 2011. In truth, Watson is not actually a computer but a set of algorithms and APIs, and since winning TV fame (and a $1 million prize) IBM has put it to use tackling tough problems in every industry from healthcare to finance. Most recently, IBM has announced several new partnerships which aim to take things even further, and put its cognitive capabilities to use solving a whole new range of problems around the world.",
+        "votes": 77,
+        "topic": "coding",
+        "author": "jessjelly",
+        "created_at": "2017-07-20T20:57:53.256Z",
+        "comment_count": 8
+      }
+    }
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "updates an article with a new vote and responds with the updated article",
+    "queries": [],
+    "exampleRequest": { "inc_votes": -1 },
+    "exampleResponse": {
+      "article": {
+        "article_id": 2,
+        "title": "The Rise Of Thinking Machines: How IBM's Watson Takes On The World",
+        "body": "Many people know Watson as the IBM-developed cognitive super computer that won the Jeopardy! gameshow in 2011. In truth, Watson is not actually a computer but a set of algorithms and APIs, and since winning TV fame (and a $1 million prize) IBM has put it to use tackling tough problems in every industry from healthcare to finance. Most recently, IBM has announced several new partnerships which aim to take things even further, and put its cognitive capabilities to use solving a whole new range of problems around the world.",
+        "votes": 76,
+        "topic": "coding",
+        "author": "jessjelly",
+        "created_at": "2017-07-20T20:57:53.256Z",
+        "comment_count": 8
+      }
+    }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "posts a new comment to an article and responds with the new comment",
+    "queries": [],
+    "exampleRequest": { "username": "jessjelly", "body": "new comment" },
+    "exampleResponse": {
+      "comment": {
+        "comment_id": 715,
+        "author": "jessjelly",
+        "article_id": 2,
+        "votes": 0,
+        "created_at": "2020-01-05T10:14:04.760Z",
+        "body": "new comment"
+      }
+    }
+  },
+  "GET /api/articles/:article_id/comments": {
+    "description": "fetches an array of comments for the given article_id, defaulting to sort_by: created_at and order: desc",
+    "queries": ["sort_by", "order"],
+    "exampleResponse": {
+      "comments": [
+        {
+          "comment_id": 606,
+          "author": "jessjelly",
+          "article_id": 22,
+          "votes": 0,
+          "created_at": "2020-01-02T15:58:41.938Z",
+          "body": "more comments"
+        },
+        {
+          "comment_id": 136,
+          "author": "weegembump",
+          "article_id": 22,
+          "votes": 18,
+          "created_at": "2017-08-23T07:58:42.343Z",
+          "body": "Eveniet ratione rerum. Corrupti vitae excepturi sit repudiandae iste dolor consectetur sit eum."
+        },
+        {
+          "comment_id": 178,
+          "author": "weegembump",
+          "article_id": 22,
+          "votes": 1,
+          "created_at": "2017-01-27T07:21:09.377Z",
+          "body": "Harum est in ut et odio sit quis dolore earum. Ad ratione velit consequatur."
+        },
+        {
+          "comment_id": 294,
+          "author": "weegembump",
+          "article_id": 22,
+          "votes": 1,
+          "created_at": "2017-01-10T14:32:38.195Z",
+          "body": "Fugit tenetur et. Consequatur aliquam molestiae voluptas iure perspiciatis et possimus in maiores. Sint et laudantium blanditiis. Illo et sapiente consequatur ducimus est."
+        },
+        {
+          "comment_id": 261,
+          "author": "grumpy19",
+          "article_id": 22,
+          "votes": -4,
+          "created_at": "2016-09-20T18:46:22.435Z",
+          "body": "Delectus id consequatur voluptatem ad sapiente quia optio dolor. Dolorum est ullam vitae."
+        },
+        {
+          "comment_id": 300,
+          "author": "jessjelly",
+          "article_id": 22,
+          "votes": -1,
+          "created_at": "2016-08-29T07:13:53.917Z",
+          "body": "Quia nemo est. Maiores animi architecto ad nihil sapiente. Odio in maxime nam assumenda tempora et nisi. Impedit quidem cum neque libero sequi et et impedit. Dignissimos ut molestiae laborum rerum error distinctio quasi hic consectetur. Odio vel qui necessitatibus perspiciatis ipsum quod excepturi saepe."
+        },
+        {
+          "comment_id": 158,
+          "author": "happyamy2016",
+          "article_id": 22,
+          "votes": -6,
+          "created_at": "2016-08-17T11:49:50.561Z",
+          "body": "Voluptatibus laudantium vel consequuntur explicabo voluptatem adipisci eligendi nihil magni. Dolore in molestias ullam sapiente et aperiam. Et aut est placeat porro dolor et modi reiciendis. Enim fuga exercitationem in. Dolore sint laudantium quos sint et aut possimus."
+        },
+        {
+          "comment_id": 291,
+          "author": "jessjelly",
+          "article_id": 22,
+          "votes": 0,
+          "created_at": "2016-07-23T05:13:01.175Z",
+          "body": "Reiciendis molestias ut possimus enim voluptatem cumque nam possimus rem. Quod sequi porro et velit dolor ut cupiditate perferendis. Cum omnis omnis sit quia maiores quos qui. Consequuntur error distinctio dolores."
+        }
+      ]
+    }
+  },
   "GET /api/articles": {
     "description": "serves an array of all topics",
     "queries": ["author", "topic", "sort_by", "order"],
@@ -23,5 +152,25 @@
         }
       ]
     }
+  },
+  "PATCH /api/comments/:comment_id": {
+    "description": "updates an comment with a new vote and responds with the updated comment",
+    "queries": [],
+    "exampleRequest": { "inc_votes": -1 },
+    "exampleResponse": {
+      "comment": {
+        "comment_id": 22,
+        "author": "cooljmessy",
+        "article_id": 27,
+        "votes": 3,
+        "created_at": "2016-07-25T04:02:51.363Z",
+        "body": "Voluptatibus tempora ab quam pariatur placeat ullam voluptatem aut. Sequi voluptatem vitae quibusdam et qui est quia. Explicabo delectus ullam quis. Officiis eum ipsam non voluptate quam dolores consequatur. Odio aliquam ut eum tempore enim nesciunt."
+      }
+    }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "deletes a specified comment",
+    "queries": [],
+    "exampleResponse": {}
   }
 }
