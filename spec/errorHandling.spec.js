@@ -1,7 +1,5 @@
-process.env.NODE_ENV = "test";
-
 const app = require("../app.js");
-const connection = require("../connections.js");
+const connection = require("../knex.js");
 
 const chai = require("chai");
 const { expect } = chai;
@@ -16,11 +14,11 @@ describe("/", () => {
     describe("ALL", () => {
       it("STATUS:404 get request route not found", () => {
         const methods = ["post", "patch", "delete", "get"];
-        const promises = methods.map(method => {
+        const promises = methods.map((method) => {
           return request(app)
             [method]("/notAroute")
             .expect(404)
-            .then(res => {
+            .then((res) => {
               expect(res.body.msg).to.equal("route not found");
             });
         });
@@ -34,11 +32,11 @@ describe("/", () => {
       describe("ALL", () => {
         it("STATUS:404 get request route not found", () => {
           const methods = ["post", "patch", "delete", "get"];
-          const promises = methods.map(method => {
+          const promises = methods.map((method) => {
             return request(app)
               [method]("/api/notAroute")
               .expect(404)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.msg).to.equal("route not found");
               });
           });
@@ -51,11 +49,11 @@ describe("/", () => {
       describe("INVALID METHODS", () => {
         it("status:405", () => {
           const invalidMethods = ["patch", "put", "delete"];
-          const methodPromises = invalidMethods.map(method => {
+          const methodPromises = invalidMethods.map((method) => {
             return request(app)
               [method]("/api/topics")
               .expect(405)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.msg).to.equal("method not allowed");
               });
           });
@@ -70,7 +68,7 @@ describe("/", () => {
             return request(app)
               .get("/api/users/notauser")
               .expect(404)
-              .then(res => expect(res.body.msg).to.equal("route not found"));
+              .then((res) => expect(res.body.msg).to.equal("route not found"));
           });
         });
       });
@@ -84,7 +82,7 @@ describe("/", () => {
             return request(app)
               .get("/api/articles?sort_by=yes")
               .expect(400)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.msg).to.equal("bad request");
               });
           });
@@ -92,7 +90,7 @@ describe("/", () => {
             return request(app)
               .get("/api/articles?order=random")
               .expect(400)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.msg).to.equal("bad request");
               });
           });
@@ -101,7 +99,7 @@ describe("/", () => {
           return request(app)
             .get("/api/articles?topic=notatopic")
             .expect(404)
-            .then(res => {
+            .then((res) => {
               expect(res.body.msg).to.equal("route not found");
             });
         });
@@ -109,7 +107,7 @@ describe("/", () => {
           return request(app)
             .get("/api/articles?author=notanauthor")
             .expect(404)
-            .then(res => {
+            .then((res) => {
               expect(res.body.msg).to.equal("route not found");
             });
         });
@@ -121,7 +119,7 @@ describe("/", () => {
             return request(app)
               .get("/api/articles/six")
               .expect(400)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.msg).to.equal("bad request");
               });
           });
@@ -129,7 +127,7 @@ describe("/", () => {
             return request(app)
               .get("/api/articles/666")
               .expect(404)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.msg).to.equal("route not found");
               });
           });
@@ -140,7 +138,7 @@ describe("/", () => {
               .patch("/api/articles/six")
               .send({ inc_votes: 3 })
               .expect(400)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.msg).to.equal("bad request");
               });
           });
@@ -149,7 +147,7 @@ describe("/", () => {
               .patch("/api/articles/1")
               .send()
               .expect(400)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.msg).to.equal("bad request");
               });
           });
@@ -158,7 +156,7 @@ describe("/", () => {
               .patch("/api/articles/1")
               .send({ randomKey: 2 })
               .expect(400)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.msg).to.equal("bad request");
               });
           });
@@ -167,7 +165,7 @@ describe("/", () => {
               .patch("/api/articles/1")
               .send({ inc_votes: "yes" })
               .expect(400)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.msg).to.equal("bad request");
               });
           });
@@ -176,7 +174,7 @@ describe("/", () => {
               .patch("/api/articles/1")
               .send({ inc_votes: 2, mitch: "present" })
               .expect(400)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.msg).to.equal("bad request");
               });
           });
@@ -191,10 +189,10 @@ describe("/", () => {
               .post("/api/articles/one/comments")
               .send({
                 username: "butter_bridge",
-                body: "I strongly object to this"
+                body: "I strongly object to this",
               })
               .expect(400)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.msg).to.equal("bad request");
               });
           });
@@ -204,10 +202,10 @@ describe("/", () => {
               .post("/api/articles/3000/comments")
               .send({
                 username: "butter_bridge",
-                body: "I strongly object to this"
+                body: "I strongly object to this",
               })
               .expect(404)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.msg).to.equal("route not found");
               });
           });
@@ -216,7 +214,7 @@ describe("/", () => {
               .post("/api/articles/1/comments")
               .send()
               .expect(400)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.msg).to.equal("bad request");
               });
           });
@@ -225,7 +223,7 @@ describe("/", () => {
               .post("/api/articles/1/comments")
               .send({ body: "down with this sort of thing!" })
               .expect(400)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.msg).to.equal("bad request");
               });
           });
@@ -234,7 +232,7 @@ describe("/", () => {
               .post("/api/articles/1/comments")
               .send({ username: "lurker" })
               .expect(400)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.msg).to.equal("bad request");
               });
           });
@@ -243,7 +241,7 @@ describe("/", () => {
               .post("/api/articles/1/comments")
               .send({ username: "bad username" })
               .expect(400)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.msg).to.equal("bad request");
               });
           });
@@ -253,10 +251,10 @@ describe("/", () => {
               .send({
                 username: "lurker",
                 body: "down with this sort of thing!",
-                mitch: "present"
+                mitch: "present",
               })
               .expect(400)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.msg).to.equal("bad request");
               });
           });
@@ -266,7 +264,7 @@ describe("/", () => {
             return request(app)
               .get("/api/articles/four/comments")
               .expect(400)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.msg).to.equal("bad request");
               });
           });
@@ -274,7 +272,7 @@ describe("/", () => {
             return request(app)
               .get("/api/articles/3000/comments")
               .expect(404)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.msg).to.equal("route not found");
               });
           });
@@ -294,7 +292,7 @@ describe("/", () => {
             .patch("/api/comments/4000")
             .send({ inc_votes: 3 })
             .expect(404)
-            .then(res => {
+            .then((res) => {
               expect(res.body.msg).to.equal("route not found");
             });
         });
@@ -303,7 +301,7 @@ describe("/", () => {
             .patch("/api/comments/six")
             .send({ inc_votes: 3 })
             .expect(400)
-            .then(res => {
+            .then((res) => {
               expect(res.body.msg).to.equal("bad request");
             });
         });
@@ -312,7 +310,7 @@ describe("/", () => {
             .patch("/api/comments/1")
             .send()
             .expect(400)
-            .then(res => {
+            .then((res) => {
               expect(res.body.msg).to.equal("bad request");
             });
         });
@@ -321,7 +319,7 @@ describe("/", () => {
             .patch("/api/comments/1")
             .send({ randomKey: 2 })
             .expect(400)
-            .then(res => {
+            .then((res) => {
               expect(res.body.msg).to.equal("bad request");
             });
         });
@@ -330,7 +328,7 @@ describe("/", () => {
             .patch("/api/comments/1")
             .send({ inc_votes: "yes" })
             .expect(400)
-            .then(res => {
+            .then((res) => {
               expect(res.body.msg).to.equal("bad request");
             });
         });
@@ -339,7 +337,7 @@ describe("/", () => {
             .patch("/api/comments/1")
             .send({ inc_votes: 2, mitch: "present" })
             .expect(400)
-            .then(res => {
+            .then((res) => {
               expect(res.body.msg).to.equal("bad request");
             });
         });
@@ -349,7 +347,7 @@ describe("/", () => {
           return request(app)
             .delete("/api/comments/four")
             .expect(400)
-            .then(res => {
+            .then((res) => {
               expect(res.body.msg).to.equal("bad request");
             });
         });
@@ -357,7 +355,7 @@ describe("/", () => {
           return request(app)
             .delete("/api/comments/30000")
             .expect(404)
-            .then(res => {
+            .then((res) => {
               expect(res.body.msg).to.equal("route not found");
             });
         });

@@ -1,7 +1,5 @@
-process.env.NODE_ENV = "test";
-
 const app = require("../app.js");
-const connection = require("../connections.js");
+const connection = require("../knex.js");
 
 const chai = require("chai");
 const { expect } = chai;
@@ -19,7 +17,7 @@ describe("/api", () => {
     return request(app)
       .get("/api")
       .expect(200)
-      .then(res => {
+      .then((res) => {
         expect(res.body).to.deep.equal(endpoints);
       });
   });
@@ -32,7 +30,7 @@ describe("/api", () => {
         return request(app)
           .get("/api/topics")
           .expect(200)
-          .then(res => {
+          .then((res) => {
             expect(res.body.topics[0]).contain.keys("description", "slug");
           });
       });
@@ -45,15 +43,15 @@ describe("/api", () => {
       describe("GET", () => {
         it("STATUS: 200 responds with a specified username object", () => {
           return request(app)
-            .get("/api/users/butter_bridge")
+            .get("/api/users/jessjelly")
             .expect(200)
-            .then(res => {
+            .then((res) => {
               expect(res.body.user).to.contain.keys(
                 "username",
                 "name",
                 "avatar_url"
               );
-              expect(res.body.user.username).to.equal("butter_bridge");
+              expect(res.body.user.username).to.equal("jessjelly");
             });
         });
       });
@@ -66,7 +64,7 @@ describe("/api", () => {
         return request(app)
           .get("/api/articles")
           .expect(200)
-          .then(res => {
+          .then((res) => {
             expect(res.body.articles[0]).to.have.keys(
               "author",
               "title",
@@ -82,9 +80,9 @@ describe("/api", () => {
         return request(app)
           .get("/api/articles")
           .expect(200)
-          .then(res => {
+          .then((res) => {
             expect(res.body.articles).to.be.sortedBy("created_at", {
-              descending: true
+              descending: true,
             });
           });
       });
@@ -95,9 +93,9 @@ describe("/api", () => {
           return request(app)
             .get("/api/articles?sort_by=comment_count")
             .expect(200)
-            .then(res => {
+            .then((res) => {
               expect(res.body.articles).to.be.sortedBy("comment_count", {
-                descending: true
+                descending: true,
               });
             });
         });
@@ -105,7 +103,7 @@ describe("/api", () => {
           return request(app)
             .get("/api/articles?author=butter_bridge")
             .expect(200)
-            .then(res => {
+            .then((res) => {
               expect(res.body.articles[0].author).to.equal("butter_bridge");
               expect(res.body.articles[1].author).to.equal("butter_bridge");
             });
@@ -114,7 +112,7 @@ describe("/api", () => {
           return request(app)
             .get("/api/articles?topic=cats")
             .expect(200)
-            .then(res => {
+            .then((res) => {
               expect(res.body.articles[0].topic).to.equal("cats");
               expect(res.body.articles.length).to.equal(1);
             });
@@ -123,7 +121,7 @@ describe("/api", () => {
           return request(app)
             .get("/api/articles?topic=paper")
             .expect(200)
-            .then(res => {
+            .then((res) => {
               expect(res.body.articles.length).to.equal(0);
             });
         });
@@ -134,9 +132,9 @@ describe("/api", () => {
       describe("GET", () => {
         it("STATUS: 200 responds with a specified article object", () => {
           return request(app)
-            .get("/api/articles/1")
+            .get("/api/articles/")
             .expect(200)
-            .then(res => {
+            .then((res) => {
               expect(res.body.article).to.contain.keys(
                 "article_id",
                 "author",
@@ -149,7 +147,7 @@ describe("/api", () => {
               );
               expect(res.body.article).to.include({
                 title: "Living in the shadow of a great man",
-                author: "butter_bridge"
+                author: "butter_bridge",
               });
             });
         });
@@ -160,7 +158,7 @@ describe("/api", () => {
             .patch("/api/articles/1")
             .send({ inc_votes: 3 })
             .expect(200)
-            .then(res => {
+            .then((res) => {
               expect(res.body.article.votes).to.equal(103);
               expect(res.body.article).to.contain.keys(
                 "article_id",
@@ -180,7 +178,7 @@ describe("/api", () => {
             .patch("/api/articles/1")
             .send({ inc_votes: -10 })
             .expect(200)
-            .then(res => {
+            .then((res) => {
               expect(res.body.article.votes).to.equal(90);
               expect(res.body.article).to.contain.keys(
                 "article_id",
@@ -204,13 +202,13 @@ describe("/api", () => {
               .post("/api/articles/1/comments")
               .send({
                 username: "butter_bridge",
-                body: "I strongly object to this"
+                body: "I strongly object to this",
               })
               .expect(201)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.comment).to.include({
                   article_id: 1,
-                  body: "I strongly object to this"
+                  body: "I strongly object to this",
                 });
               });
           });
@@ -220,7 +218,7 @@ describe("/api", () => {
             return request(app)
               .get("/api/articles/1/comments")
               .expect(200)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.comments[0]).to.have.keys(
                   "body",
                   "author",
@@ -236,9 +234,9 @@ describe("/api", () => {
             return request(app)
               .get("/api/articles/1/comments")
               .expect(200)
-              .then(res => {
+              .then((res) => {
                 expect(res.body.comments).to.be.sortedBy("created_at", {
-                  descending: true
+                  descending: true,
                 });
               });
           });
@@ -250,9 +248,9 @@ describe("/api", () => {
               return request(app)
                 .get("/api/articles/1/comments?sort_by=votes")
                 .expect(200)
-                .then(res => {
+                .then((res) => {
                   expect(res.body.comments).to.be.sortedBy("votes", {
-                    descending: true
+                    descending: true,
                   });
                 });
             });
@@ -260,9 +258,9 @@ describe("/api", () => {
               return request(app)
                 .get("/api/articles/1/comments?order=asc")
                 .expect(200)
-                .then(res => {
+                .then((res) => {
                   expect(res.body.comments).to.be.sortedBy("created_at", {
-                    ascending: true
+                    ascending: true,
                   });
                 });
             });
@@ -270,9 +268,9 @@ describe("/api", () => {
               return request(app)
                 .get("/api/articles/1/comments?sort_by=votes&order=asc")
                 .expect(200)
-                .then(res => {
+                .then((res) => {
                   expect(res.body.comments).to.be.sortedBy("votes", {
-                    ascending: true
+                    ascending: true,
                   });
                 });
             });
@@ -291,7 +289,7 @@ describe("/api", () => {
             .patch("/api/comments/1")
             .send({ inc_votes: 3 })
             .expect(200)
-            .then(res => {
+            .then((res) => {
               expect(res.body.comment.votes).to.equal(19);
               expect(res.body.comment).to.contain.keys(
                 "comment_id",
@@ -310,7 +308,7 @@ describe("/api", () => {
           return request(app)
             .delete("/api/comments/1")
             .expect(204)
-            .then(res => {
+            .then((res) => {
               expect(res.body).to.deep.equal({});
             });
         });

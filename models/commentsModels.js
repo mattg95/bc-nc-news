@@ -1,4 +1,4 @@
-const connection = require("../connections.js");
+const connection = require("../knex.js");
 
 const { checkArticleExists } = require("./checkThingsExistFuncs");
 
@@ -7,7 +7,7 @@ exports.writeComment = (username, article_id, body) => {
     .insert({
       author: username,
       article_id: article_id,
-      body: body
+      body: body,
     })
     .returning("*");
 };
@@ -18,7 +18,7 @@ exports.fetchComments = (article_id, sort_by, order) => {
     .from("comments")
     .where("article_id", article_id)
     .orderBy(sort_by || "created_at", order || "desc")
-    .then(comments => {
+    .then((comments) => {
       if (!comments.length) {
         return Promise.all([comments, checkArticleExists(article_id)]).then(
           ([comments]) => {
@@ -35,7 +35,7 @@ exports.changeComment = (comment_id, inc_votes) => {
     .where("comment_id", comment_id)
     .increment({ votes: inc_votes || 0 })
     .returning("*")
-    .then(commentRes => {
+    .then((commentRes) => {
       const [comment] = commentRes;
       if (!comment) {
         return Promise.reject({ status: 404, msg: "route not found" });
@@ -46,11 +46,11 @@ exports.changeComment = (comment_id, inc_votes) => {
     });
 };
 
-exports.destroyComment = comment_id => {
+exports.destroyComment = (comment_id) => {
   return connection("comments")
     .where("comment_id", comment_id)
     .delete("*")
-    .then(commentRes => {
+    .then((commentRes) => {
       const [comment] = commentRes;
       if (!comment) {
         return Promise.reject({ status: 404, msg: "route not found" });

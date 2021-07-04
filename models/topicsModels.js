@@ -1,4 +1,4 @@
-const connection = require("../connections.js");
+const connection = require("../knex.js");
 
 function returnAllTopics() {
   return connection.select("*").from("topics");

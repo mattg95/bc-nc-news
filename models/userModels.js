@@ -1,11 +1,11 @@
-const connection = require("../connections.js");
+const connection = require("../knex.js");
 
 function returnUser(params) {
   return connection
     .select("*")
     .from("users")
     .where({ username: params.username })
-    .then(users => {
+    .then((users) => {
       if (!users.length) {
         return Promise.reject({ status: 404, msg: "route not found" });
       }
