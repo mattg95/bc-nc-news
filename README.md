@@ -1,6 +1,6 @@
 # NewsApp
 
-https://nc-news-matt-g.herokuapp.com/
+https://nc-news-matt-g.herokuapp.com/api
 
 A web application which allows the hosting of articles, topics, comments and users.
 
