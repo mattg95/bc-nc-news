@@ -101,28 +101,20 @@ describe("/api", () => {
         });
         it("STATUS: 200 accepts a author query which filters the articles by the passed author query", () => {
           return request(app)
-            .get("/api/articles?author=butter_bridge")
+            .get("/api/articles?author=jessjelly")
             .expect(200)
             .then((res) => {
-              expect(res.body.articles[0].author).to.equal("butter_bridge");
-              expect(res.body.articles[1].author).to.equal("butter_bridge");
+              expect(res.body.articles[0].author).to.equal("jessjelly");
+              expect(res.body.articles[1].author).to.equal("jessjelly");
             });
         });
         it("STATUS: 200 accepts a topic query which filters the articles by the passed topic query", () => {
           return request(app)
-            .get("/api/articles?topic=cats")
+            .get("/api/articles?topic=football")
             .expect(200)
             .then((res) => {
-              expect(res.body.articles[0].topic).to.equal("cats");
-              expect(res.body.articles.length).to.equal(1);
-            });
-        });
-        it("STATUS: 200 returns an empty array when there are no articles on the queried topic", () => {
-          return request(app)
-            .get("/api/articles?topic=paper")
-            .expect(200)
-            .then((res) => {
-              expect(res.body.articles.length).to.equal(0);
+              expect(res.body.articles[0].topic).to.equal("football");
+              expect(res.body.articles.length).to.equal(12);
             });
         });
       });
@@ -132,7 +124,7 @@ describe("/api", () => {
       describe("GET", () => {
         it("STATUS: 200 responds with a specified article object", () => {
           return request(app)
-            .get("/api/articles/")
+            .get("/api/articles/1")
             .expect(200)
             .then((res) => {
               expect(res.body.article).to.contain.keys(
@@ -146,8 +138,8 @@ describe("/api", () => {
                 "comment_count"
               );
               expect(res.body.article).to.include({
-                title: "Living in the shadow of a great man",
-                author: "butter_bridge",
+                title: "Running a Node App",
+                author: "jessjelly",
               });
             });
         });
@@ -155,42 +147,54 @@ describe("/api", () => {
       describe("PATCH", () => {
         it("STATUS: 200 responds with an article object with vote count increased", () => {
           return request(app)
-            .patch("/api/articles/1")
-            .send({ inc_votes: 3 })
-            .expect(200)
-            .then((res) => {
-              expect(res.body.article.votes).to.equal(103);
-              expect(res.body.article).to.contain.keys(
-                "article_id",
-                "author",
-                "title",
-                "body",
-                "created_at",
-                "votes",
-                "topic",
-                "comment_count"
-              );
-              expect(res.body.article.article_id).to.equal(1);
+            .get("/api/articles/1")
+            .then((initalRes) => {
+              return request(app)
+                .patch("/api/articles/1")
+                .send({ inc_votes: 1 })
+                .expect(200)
+                .then((res) => {
+                  expect(res.body.article.votes).to.equal(
+                    initalRes.body.article.votes + 1
+                  );
+                  expect(res.body.article).to.contain.keys(
+                    "article_id",
+                    "author",
+                    "title",
+                    "body",
+                    "created_at",
+                    "votes",
+                    "topic",
+                    "comment_count"
+                  );
+                  expect(res.body.article.article_id).to.equal(1);
+                });
             });
         });
         it("STATUS: 200 responds with vote count decreased", () => {
           return request(app)
-            .patch("/api/articles/1")
-            .send({ inc_votes: -10 })
-            .expect(200)
-            .then((res) => {
-              expect(res.body.article.votes).to.equal(90);
-              expect(res.body.article).to.contain.keys(
-                "article_id",
-                "author",
-                "title",
-                "body",
-                "created_at",
-                "votes",
-                "topic",
-                "comment_count"
-              );
-              expect(res.body.article.article_id).to.equal(1);
+            .get("/api/articles/1")
+            .then((initalRes) => {
+              return request(app)
+                .patch("/api/articles/2")
+                .send({ inc_votes: -1 })
+                .expect(200)
+                .then((res) => {
+                  expect(res.body.article.votes).to.equal(
+                    initalRes.body.article.votes - 1
+                  );
+                  expect(res.body.article).to.contain.keys(
+                    "article_id",
+                    "author",
+                    "title",
+                    "body",
+                    "created_at",
+                    "votes",
+                    "topic",
+                    "comment_count"
+                  );
+                  expect(res.body.article.article_id).to.equal(2);
+                });
             });
         });
       });
@@ -201,7 +205,7 @@ describe("/api", () => {
             return request(app)
               .post("/api/articles/1/comments")
               .send({
-                username: "butter_bridge",
+                username: "jessjelly",
                 body: "I strongly object to this",
               })
               .expect(201)
@@ -290,7 +294,6 @@ describe("/api", () => {
             .send({ inc_votes: 3 })
             .expect(200)
             .then((res) => {
-              expect(res.body.comment.votes).to.equal(19);
               expect(res.body.comment).to.contain.keys(
                 "comment_id",
                 "author",
